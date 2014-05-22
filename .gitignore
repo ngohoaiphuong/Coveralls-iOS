@@ -1,0 +1,10 @@
+*.pbxuser
+!default.pbxuser
+!default.xcworkspace
+xcuserdata
+*.xcuserstate
+*.xccheckout
+*.DS_Store
+Pods/
+DerivedData/
+Build/
