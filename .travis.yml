@@ -4,7 +4,13 @@ before_install:
   - brew uninstall xctool
   - brew update
   - brew install xctool --HEAD  
+
 script:
-  - xctool test ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
+- xcodebuild clean test -sdk iphonesimulator -configuration Debug OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES | xcpretty
+
 after_success:
-  - ./script/coveralls.sh
+  - coveralls -e Coveralls-iOS
+
+env:
+  global:
+  - APPNAME="Coveralls-iOS"
