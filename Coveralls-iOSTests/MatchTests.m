@@ -10,6 +10,8 @@
 #import "Math.h"
 @implementation MatchTests
 - (void)testAdd{
+    NSString	*message;
+    message = @"Result: canceled";
     NSInteger result = [Math add:1 to:1];
     STAssertEquals(result, 2, @"1+1");
 }
