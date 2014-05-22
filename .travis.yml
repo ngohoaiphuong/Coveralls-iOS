@@ -4,6 +4,8 @@ before_install:
 - sudo easy_install cpp-coveralls
 - gem install xcpretty
 - wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
+- pwd
+- ls /Users
 - mkdir /Users/tmp
 - tar -xvjf checker-276.tar.bz2 -C /Users/tmp/checker-276
 
