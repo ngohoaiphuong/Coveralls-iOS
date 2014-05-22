@@ -3,11 +3,9 @@ language: objective-c
 before_install:
 - sudo easy_install cpp-coveralls
 - gem install xcpretty
-- oldpath=`pwd`
 - cd /Users/Shared
 - wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
 - tar -xvjf checker-276.tar.bz2
-- cd oldpath
 
 script:
 - xcodebuild clean test -sdk iphonesimulator -configuration Debug OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES | xcpretty
