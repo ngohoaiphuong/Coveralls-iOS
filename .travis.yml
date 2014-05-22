@@ -5,16 +5,17 @@ before_install:
 - gem install xcpretty
 - wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
 - pwd
-- ls /Users
 - mkdir /Users/Shared/tmp
-- tar -xvjf checker-276.tar.bz2 -C /Users/Shared/tmp/checker-276
+- ls /Users/Shared
+- tar -xvjf checker-276.tar.bz2 -C /Users/Shared/checker-276
 
 script:
 - xcodebuild clean test -sdk iphonesimulator -configuration Debug OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES | xcpretty
-- /Users/Shared/tmp/checker-276/scan-build xcodebuild -sdk iphonesimulator analyze 
+- /Users/Shared/checker-276/scan-build xcodebuild -sdk iphonesimulator analyze 
 
 after_success:
 - coveralls -e Coveralls-iOS
+- .utility/update-gh-pages.sh
 
 env:
   global:
