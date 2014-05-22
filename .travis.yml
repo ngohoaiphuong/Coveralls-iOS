@@ -12,6 +12,7 @@ script:
 
 after_success:
 - ls report
+- .utility/update-gh-pages.sh
 - coveralls -e checker-276
 
 env:
