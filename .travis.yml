@@ -1,10 +1,22 @@
 language: objective-c
+
 before_install:
-  - sudo easy_install cpp-coveralls
-  - brew uninstall xctool
-  - brew update
-  - brew install xctool --HEAD  
+- sudo easy_install cpp-coveralls
+- gem install xcpretty
+- wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
+- pwd
+- mkdir /Users/Shared/tmp
+- ls /Users/Shared
+- tar -xvjf checker-276.tar.bz2 -C /Users/Shared/checker-276
+
 script:
-  - xctool test ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
+- xcodebuild clean test -sdk iphonesimulator -configuration Debug OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES | xcpretty
+- /Users/Shared/checker-276/scan-build xcodebuild -sdk iphonesimulator analyze 
+
 after_success:
-  - ./script/coveralls.sh
+- coveralls -e Coveralls-iOS
+- .utility/update-gh-pages.sh
+
+env:
+  global:
+  - APPNAME="Coveralls-iOS"
