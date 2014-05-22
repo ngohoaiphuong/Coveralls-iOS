@@ -10,6 +10,8 @@
 
 @implementation Math
 + (NSInteger)add:(NSInteger)aValue to:(NSInteger)bValue{
+    NSString	*message;
+    message = @"Result: canceled";
     return aValue + bValue;
 }
 @end

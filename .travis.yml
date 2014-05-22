@@ -11,8 +11,8 @@ script:
 - ./checker-276/scan-build -o report xcodebuild -sdk iphonesimulator analyze 
 
 after_success:
-- ls
-- coveralls -e Coveralls-iOS
+- ls report
+- coveralls -e checker-276
 
 env:
   global:
