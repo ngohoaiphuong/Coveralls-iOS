@@ -1,12 +1,12 @@
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo -e "Starting to update gh-pages\n"
 
-  cp -R coverage $HOME/coverage
+  cp -R report $HOME/coverage
 
   cd $HOME
-  git config --global user.email "travis@travis-ci.org"
-  git config --global user.name "Travis"
-  git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/Uko/Rubidium-WHOIS.git  gh-pages > /dev/null
+  git config --global user.email "ngohoai.phuong@gmail.com"
+  git config --global user.name "ngohoaiphuong"
+  git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/ngohoaiphuong/Coveralls-iOS.git  gh-pages > /dev/null
 
   cd gh-pages
   cp -Rf $HOME/coverage/* .
