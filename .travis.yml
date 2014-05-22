@@ -8,9 +8,7 @@ before_install:
 
 script:
 - xcodebuild clean test -sdk iphonesimulator -configuration Debug OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES | xcpretty
-- ./checker-276/scan-build make
-- xcodebuild -sdk iphonesimulator clean
-- ./checker-276/scan-build --view xcodebuild -sdk iphonesimulator analyze 
+- ./checker-276/scan-build xcodebuild -sdk iphonesimulator analyze 
 
 after_success:
 - coveralls -e Coveralls-iOS
