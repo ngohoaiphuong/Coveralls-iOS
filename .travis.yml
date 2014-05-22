@@ -6,7 +6,7 @@ before_install:
 - wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
 - pwd
 - ls /Users
-- mkdir /Users/tmp
+- mkdir /Users/Shared/tmp
 - tar -xvjf checker-276.tar.bz2 -C /Users/tmp/checker-276
 
 script:
