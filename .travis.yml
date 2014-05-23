@@ -3,7 +3,6 @@ language: objective-c
 before_install:
 - sudo easy_install cpp-coveralls
 - gem install xcpretty
-- gem install travis
 - wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
 - tar -xvjf checker-276.tar.bz2
 
@@ -14,6 +13,7 @@ script:
 after_success:
 - ls report
 - .utility/update-gh-pages.sh
+- travis token
 - coveralls -e checker-276
 
 env:
