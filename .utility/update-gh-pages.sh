@@ -19,8 +19,10 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
   git remote -v
 
+  git remote add my_origin https://github.com/${TRAVIS_REPO_SLUG}.git
+
   git checkout -b ci-report/feature/build_$TRAVIS_BUILD_NUMBER
-  git push -u origin ci-report/feature/build_$TRAVIS_BUILD_NUMBER
+  git push -u my_origin ci-report/feature/build_$TRAVIS_BUILD_NUMBER
 
   cp -R $HOME/report/*/ .
 
@@ -29,7 +31,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
   git add -f .
   git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to gh-pages"
-  git push -fq origin ci-report/feature/build_$TRAVIS_BUILD_NUMBER
+  git push -fq my_origin ci-report/feature/build_$TRAVIS_BUILD_NUMBER
 
   echo -e "Done magic with coverage\n"
 fi
