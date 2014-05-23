@@ -17,6 +17,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
   cd $TRAVIS_BUILD_NUMBER
 
+  git remote -v 
   git checkout -b ci-report/feature/build_$TRAVIS_BUILD_NUMBER
   git push -u origin ci-report/feature/build_$TRAVIS_BUILD_NUMBER
 
