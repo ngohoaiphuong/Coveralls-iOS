@@ -7,6 +7,7 @@ echo "GH_TOKEN = ${GH_TOKEN}"
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo -e "Starting to update gh-pages\n"
 
+  cp -R report $HOME/report
   cd $HOME
 
   git config --global user.email "ngohoai.phuong@gmail.com"
@@ -14,13 +15,12 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
   git clone --depth=50 --branch=ci-report/template git://github.com/${TRAVIS_REPO_SLUG}.git $HOME/$TRAVIS_BUILD_NUMBER
 
+  cd $TRAVIS_BUILD_NUMBER
+
   git checkout -b ci-report/feature/build_$TRAVIS_BUILD_NUMBER
   git push -u origin ci-report/feature/build_$TRAVIS_BUILD_NUMBER
 
-
-  cd $TRAVIS_BUILD_NUMBER
-  cp -R report/* .
-
+  cp -R $HOME/report/*/ .
 
 #   cd gh-pages
 #   cp -Rf $HOME/coverage/* .
