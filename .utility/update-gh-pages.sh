@@ -2,7 +2,7 @@ export REPO="$(pwd | sed s,^/home/travis/build/,,g)"
 echo -e "Current Repo:$REPO --- Travis Branch:$TRAVIS_BRANCH"
 echo "TRAVIS_PULL_REQUEST = $TRAVIS_PULL_REQUEST"
 echo "TRAVIS_BUILD_NUMBER = $TRAVIS_BUILD_NUMBER"
-echo "GH_TOKEN = $GH_TOKEN"
+echo "GH_TOKEN = ${GH_TOKEN}"
 
 # if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 #   echo -e "Starting to update gh-pages\n"
