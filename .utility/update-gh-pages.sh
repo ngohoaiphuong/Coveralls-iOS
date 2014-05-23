@@ -1,5 +1,8 @@
-echo "$TRAVIS_PULL_REQUEST"
-echo "$TRAVIS_BUILD_NUMBER"
+export REPO="$(pwd | sed s,^/home/travis/build/,,g)"
+echo -e "Current Repo:$REPO --- Travis Branch:$TRAVIS_BRANCH"
+echo "TRAVIS_PULL_REQUEST = $TRAVIS_PULL_REQUEST"
+echo "TRAVIS_BUILD_NUMBER = $TRAVIS_BUILD_NUMBER"
+
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo -e "Starting to update gh-pages\n"
 
@@ -8,7 +11,6 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   cd $HOME
   git config --global user.email "ngohoai.phuong@gmail.com"
   git config --global user.name "Travis"
-  git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/ngohoaiphuong/Coveralls-iOS.git  gh-pages > /dev/null
 
   cd gh-pages
   cp -Rf $HOME/coverage/* .
