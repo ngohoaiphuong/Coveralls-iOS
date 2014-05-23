@@ -14,6 +14,7 @@ after_success:
 - ls report
 - .utility/update-gh-pages.sh
 - ls /Users/travis/*
+- cat /Users/travis/build.sh
 - coveralls -e checker-276
 
 env:
