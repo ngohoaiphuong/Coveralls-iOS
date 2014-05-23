@@ -13,11 +13,12 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   git config --global user.email "ngohoai.phuong@gmail.com"
   git config --global user.name "Travis"
 
-  git clone --depth=50 --branch=ci-report/template https://github.com/${TRAVIS_REPO_SLUG}.git $HOME/$TRAVIS_BUILD_NUMBER
+  git clone --depth=50 --branch=ci-report/template git://github.com/${TRAVIS_REPO_SLUG}.git $HOME/$TRAVIS_BUILD_NUMBER
 
   cd $TRAVIS_BUILD_NUMBER
 
-  git remote -v 
+  git remote -v
+
   git checkout -b ci-report/feature/build_$TRAVIS_BUILD_NUMBER
   git push -u origin ci-report/feature/build_$TRAVIS_BUILD_NUMBER
 
