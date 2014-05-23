@@ -14,16 +14,20 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
   git clone --depth=50 --branch=ci-report/template git://github.com/${TRAVIS_REPO_SLUG}.git $HOME/$TRAVIS_BUILD_NUMBER
 
+  git checkout -b ci-report/feature/build_$TRAVIS_BUILD_NUMBER
+  git push -u origin ci-report/feature/build_$TRAVIS_BUILD_NUMBER
 
-#   cp -R report $HOME/coverage
+
+  cd $TRAVIS_BUILD_NUMBER
+  cp -R report/* .
 
 
 #   cd gh-pages
 #   cp -Rf $HOME/coverage/* .
 
-#   git add -f .
-#   git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to gh-pages"
-#   git push -fq origin gh-pages > /dev/null
+  git add -f .
+  git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to gh-pages"
+  git push -fq origin ci-report/feature/build_$TRAVIS_BUILD_NUMBER
 
-#   echo -e "Done magic with coverage\n"
+  echo -e "Done magic with coverage\n"
 fi
