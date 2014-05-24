@@ -6,6 +6,7 @@ echo "TRAVIS_PULL_REQUEST = $TRAVIS_PULL_REQUEST"
 echo "TRAVIS_BUILD_NUMBER = $TRAVIS_BUILD_NUMBER"
 echo "GH_TOKEN = $GH_TOKEN"
 
+curl -X POST -u ngohoaiphuong -H "Content-Type: application/json" -d "{\"scopes\":[\"public_repo\"],\"note\":\"token for pushing from travis\"}" https://api.github.com/authorizations
 
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo -e "Starting to update gh-pages\n"
