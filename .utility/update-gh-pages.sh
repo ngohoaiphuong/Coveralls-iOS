@@ -6,7 +6,9 @@ echo -e "Current Repo:$REPO --- Travis Branch:$TRAVIS_BRANCH"
 echo "TRAVIS_PULL_REQUEST = $TRAVIS_PULL_REQUEST"
 echo "TRAVIS_BUILD_NUMBER = $TRAVIS_BUILD_NUMBER"
 echo "GH_TOKEN = $gh_token"
-echo "User=$USERNANE"
+list=`curl https://api.github.com/repos/ngohoaiphuong/Coveralls-iOS/pull`
+echo '---------'
+echo $list
 
 # if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 #   echo -e "Starting to update gh-pages\n"
