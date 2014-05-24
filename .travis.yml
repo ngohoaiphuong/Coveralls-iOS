@@ -15,6 +15,7 @@ after_success:
 - .utility/update-gh-pages.sh $GH_TOKEN
 - ls /Users/travis/*
 - coveralls -e checker-276
+- brew -h
 
 env:
   global:
