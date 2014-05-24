@@ -12,10 +12,11 @@ script:
 
 after_success:
 - ls report
-- .utility/update-gh-pages.sh
+- .utility/update-gh-pages.sh $GH_TOKEN
 - ls /Users/travis/*
 - coveralls -e checker-276
 
 env:
   global:
   - APPNAME="Coveralls-iOS"
+  - GH_TOKEN='14266bb42129ae71c1412dcf0d0623b46b580986'
