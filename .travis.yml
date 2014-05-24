@@ -16,6 +16,7 @@ after_success:
 - ls /Users/travis/*
 - coveralls -e checker-276
 - brew -h
+- sed -h
 
 env:
   global:
