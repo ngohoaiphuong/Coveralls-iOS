@@ -17,6 +17,7 @@ after_success:
 - coveralls -e checker-276
 - brew -h
 - sed -h
+- awk
 
 env:
   global:
