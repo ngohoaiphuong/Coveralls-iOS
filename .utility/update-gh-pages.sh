@@ -22,7 +22,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
   git remote -v
 
-  git remote add my_origin https://github.com/${TRAVIS_REPO_SLUG}.git
+  git remote add my_origin https://14266bb42129ae71c1412dcf0d0623b46b580986@github.com/${TRAVIS_REPO_SLUG}.git
 
   git checkout -b ci-report/feature/build_$TRAVIS_BUILD_NUMBER
   git push -u my_origin ci-report/feature/build_$TRAVIS_BUILD_NUMBER
