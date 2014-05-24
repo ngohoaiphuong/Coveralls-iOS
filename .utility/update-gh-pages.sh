@@ -6,7 +6,7 @@ echo -e "Current Repo:$REPO --- Travis Branch:$TRAVIS_BRANCH"
 echo "TRAVIS_PULL_REQUEST = $TRAVIS_PULL_REQUEST"
 echo "TRAVIS_BUILD_NUMBER = $TRAVIS_BUILD_NUMBER"
 echo "GH_TOKEN = $gh_token"
-list=`curl https://api.github.com/repos/ngohoaiphuong/Coveralls-iOS/pull`
+list=`curl https://api.github.com/repos/ngohoaiphuong/Coveralls-iOS/pulls`
 echo '---------'
 echo $list
 
