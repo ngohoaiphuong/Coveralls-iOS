@@ -1,5 +1,5 @@
 export REPO="$(pwd | sed s,^/home/travis/build/,,g)"
-export GH_TOKEN = 14266bb42129ae71c1412dcf0d0623b46b580986
+export GH_TOKEN = "14266bb42129ae71c1412dcf0d0623b46b580986"
 
 echo -e "Current Repo:$REPO --- Travis Branch:$TRAVIS_BRANCH"
 echo "TRAVIS_PULL_REQUEST = $TRAVIS_PULL_REQUEST"
