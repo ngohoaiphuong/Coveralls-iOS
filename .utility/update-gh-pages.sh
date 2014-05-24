@@ -1,5 +1,5 @@
 export REPO="$(pwd | sed s,^/home/travis/build/,,g)"
-export GH_TOKEN = "14266bb42129ae71c1412dcf0d0623b46b580986"
+GH_TOKEN = "14266bb42129ae71c1412dcf0d0623b46b580986"
 
 echo -e "Current Repo:$REPO --- Travis Branch:$TRAVIS_BRANCH"
 echo "TRAVIS_PULL_REQUEST = $TRAVIS_PULL_REQUEST"
@@ -16,7 +16,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   git config --global user.email "ngohoai.phuong@gmail.com"
   git config --global user.name "Travis"
 
-  git clone --depth=50 --branch=ci-report/template https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git $HOME/$TRAVIS_BUILD_NUMBER
+  git clone --depth=50 --branch=ci-report/template https://14266bb42129ae71c1412dcf0d0623b46b580986@github.com/${TRAVIS_REPO_SLUG}.git $HOME/$TRAVIS_BUILD_NUMBER
 
   cd $TRAVIS_BUILD_NUMBER
 
