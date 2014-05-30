@@ -78,6 +78,7 @@ if [[ $? == 1 ]]; then
   if [[ $? == 1 ]]; then
     #statements
     echo "repository=$result"
+    echo "comments=$comments_url"
   fi
 fi
 
