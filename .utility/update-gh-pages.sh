@@ -9,6 +9,7 @@ echo "GH_TOKEN = $gh_token"
 list=`curl https://api.github.com/repos/ngohoaiphuong/Coveralls-iOS/pulls`
 echo '---------'
 echo $list
+echo ">>>>>>GH_TOKEN=${GH_TOKEN}"
 
 # if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 #   echo -e "Starting to update gh-pages\n"
@@ -41,3 +42,5 @@ echo $list
 
 #   echo -e "Done magic with coverage\n"
 # fi
+
+# curl -X POST -d "{\"body\":\"test add comment\"}" -H 'Authorization: token 14266bb42129ae71c1412dcf0d0623b46b580986' https://api.github.com/repos/ngohoaiphuong/Coveralls-iOS/issues/2/comments
