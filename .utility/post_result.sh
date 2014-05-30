@@ -112,11 +112,12 @@ getValueFromKey '/Users/travis/build/' $TRAVIS_BUILD_DIR
 if [[ $? == 1 ]]; then
   #statements
   url_api="${url_api}${result}/pulls"
-
+  echo "url_api=$url_api"
   getCurrentPullRequest $url_api
   if [[ $? == 1 ]]; then
     #statements
     pull_request=$result
+    echo "pull_request=$pull_request"
     save_report
   fi
 fi
