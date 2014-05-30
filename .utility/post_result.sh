@@ -17,10 +17,10 @@ getValueFromKey(){
   if [[ $str =~ ^($pattern)(.*)$ ]]; then
     #statements
     result=${BASH_REMATCH[2]}
-    return 1
+    return true
   fi
 
-  return 0
+  return false
 }
 
 getCurrentPullRequest(){
@@ -61,14 +61,14 @@ getCurrentPullRequest(){
         result=$repository
         comments_url=$comments
         echo "::>>>comments_url>>>$comments_url"
-        return 1
+        return true
       fi
     fi
   done    
 
   IFS=$OIFS
 
-  return 0
+  return false
 }
 
 generate_report(){
@@ -115,13 +115,13 @@ url_api='https://api.github.com/repos/'
 branch=$TRAVIS_BRANCH
 
 getValueFromKey '/Users/travis/build/' $TRAVIS_BUILD_DIR
-if [[ $? == 1 ]]; then
+if [[ "$?" == true ]]; then
   #statements
   url_api="${url_api}${result}/pulls"
   echo "url_api=$url_api"
   getCurrentPullRequest $url_api
   echo "result=$?"
-  if [[ $? == 1 ]]; then
+  if [[ "$?" == true ]]; then
     #statements
     pull_request=$result
     echo "pull_request=$pull_request"
