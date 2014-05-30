@@ -17,4 +17,3 @@ env:
   - APPNAME="Coveralls-iOS"
   - DESCRIPTION="Run test coverage and analyze"
   - secure: v45pjcogHNfXQyopD7gJRWHem9MeNqfViwSANlGBVt1XD5LgKqKlFKnLmq9HN8F+neUSwxGGYx/+sF8okLi5ax5qqNQVy5JsNLPtIYXbiu6MWhy8EZ77TogANu4VNk3/QfTx29Cin+XzU81W4wXsFQzE9KG71wGo1TtmI663Yxo=
-  - secure: G5Iy28itMuVVKAYyLYCJ69Y62IQGz9c1Y4cmwjkvByP2CH+ylLb5vugMWk/DW/nheN93F2YKtdO3SuoKV06/GpVeFfHaHcHtEgHqbEGNzbtRuOmKCUJP7i3Rzu2FSMqkF4Y549ut9xqJg8yWi/9SKgWGEJfZR9H0E5/p8Y/7eKE=
