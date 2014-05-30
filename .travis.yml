@@ -1,16 +1,12 @@
 language: objective-c
 
-branches:
-  except:
-  - /build_.*$/
-
 before_install:
 - chmod +x .utility/post_result.sh
 - wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
 - tar -xvjf checker-276.tar.bz2
 
 script:
-- xcodebuild clean test -sdk iphonesimulator -configuration Debug OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
+- xcodebuild clean test -sdk iphonesimulator -project Coveralls-iOS.xcodeproj -scheme ci -configuration Debug OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
 - ./checker-276/scan-build -o report xcodebuild -sdk iphonesimulator clean analyze 
 
 after_success:
