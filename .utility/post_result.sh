@@ -66,15 +66,41 @@ getCurrentPullRequest(){
 }
 
 generate_report(){
-  ls '/Applications/CoverStory.app'
   osascript .utility/coverstory.scpt $TRAVIS_BUILD_DIR/coverage_report $HOME/coverage
+}
+
+push_2_report(){
+  dir_html=$1
+  name_branch=$2
+  echo "dir_html=$dir_html"
+  echo "name_branch=$name_branch"
+  echo "------------------------"
+}
+
+set_git_info(){
+  git config --global user.email "ngohoai.phuong@gmail.com"
+  git config --global user.name "Travis"
 }
 
 save_report(){
   if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    echo -e "Starting process data report\n"
+    echo -e "Starting process data report"
+
     generate_report
-    echo -e "End process data report\n"    
+
+    set_git_info
+
+    if [[ -d $HOME/coverage ]]; then
+      #statements
+      push_2_report $TRAVIS_BUILD_DIR/coverage_report "coverage"
+    fi
+
+    if [[ -d $TRAVIS_BUILD_DIR/analyzer_report ]]; then
+      #statements
+      push_2_report analyzer_report "analyzer"
+    fi
+
+    echo -e "End process data report"    
   fi
 }
 
@@ -101,5 +127,5 @@ echo "TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR"
 echo "TRAVIS_REPO_SLUG=$TRAVIS_REPO_SLUG"
 echo "BRANCH=$branch"
 echo "GH_TOKEN=${GH_TOKEN}"
-echo "TRAVIS_TOKEN=${TRAVIS_TOKEN}"
+echo "TRAVIS_TOKEN=${REPORT_TOKEN}"
 echo '-----------------------------'
