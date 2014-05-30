@@ -67,7 +67,7 @@ getCurrentPullRequest(){
 
 generate_report(){
   ls '/Applications/CoverStory.app'
-  osascript .utility/coverstory.scpt coverage_report $HOME/coverage
+  osascript .utility/coverstory.scpt $TRAVIS_BUILD_DIR/coverage_report $HOME/coverage
 }
 
 save_report(){
