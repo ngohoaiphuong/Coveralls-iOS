@@ -119,8 +119,9 @@ set_git_info(){
 }
 
 push_comment_2_pullrequest(){
-  echo "message:$message_str"
-  curl -X POST -d "{\"body\":\"$message_str\"}" -H "Authorization: token ${GH_TOKEN}" $comments_url
+  echo "message:$1"
+  echo "$comment_string"
+  curl -X POST -d "{\"body\":\"$1\"}" -H "Authorization: token ${GH_TOKEN}" $comments_url
 }
 
 save_report(){
