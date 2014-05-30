@@ -31,6 +31,7 @@ getCurrentPullRequest(){
   OIFS=$IFS
   IFS=','
   comments_url=''
+  echo $response
   tokens=($response)
 
   for (( i = 0; i < ${#tokens[@]}; i++ )); 
