@@ -119,9 +119,9 @@ set_git_info(){
 }
 
 push_comment_2_pullrequest(){
-  echo "message:$1"
-  echo "$comment_string"
-  curl -X POST -d "{\"body\":\"$1\"}" -H "Authorization: token ${GH_TOKEN}" $comments_url
+  message_str="[Analyzer completed]($2) [Run coverage completed]($1)"
+
+  curl -X POST -d "{\"body\":\"${message_str}\"}" -H "Authorization: token ${GH_TOKEN}" $comments_url
 }
 
 save_report(){
@@ -131,26 +131,24 @@ save_report(){
     generate_report
 
     set_git_info
-    local comment_string=''
+    local coverage_link=''
+    local analyzer_link=''
 
     if [[ -d $HOME/coverage ]]; then
       #statements
       push_2_report $HOME/coverage "coverage"
-      comment_string="[Run coverage completed, Click here to view report]($link)"
-      echo "1.comments:$comment_string"
+      coverage_link=$link
     fi
 
     if [[ -d $TRAVIS_BUILD_DIR/analyzer_report ]]; then
       #statements
       push_2_report $TRAVIS_BUILD_DIR/analyzer_report "analyzer"
-      comment_string="${comment_string}\\\\n[Run analyzer completed, Click here to view report]($link)"
-      echo "2.comments:$comment_string"
+      analyzer_link=$link
     fi
 
-    if [[ "$comment_string" != '' ]]; then
+    if [[ "$coverage_link" != '' ]]; then
       #statements
-      echo "comments:$comment_string"
-      push_comment_2_pullrequest $comment_string
+      push_comment_2_pullrequest $coverage_link $analyzer_link
     fi
 
     echo -e "End process data report"    
