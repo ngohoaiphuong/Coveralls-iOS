@@ -17,8 +17,8 @@ after_success:
 - .utility/post_result.sh
 
 env:
-  - secure: "v45pjcogHNfXQyopD7gJRWHem9MeNqfViwSANlGBVt1XD5LgKqKlFKnLmq9HN8F+neUSwxGGYx/+sF8okLi5ax5qqNQVy5JsNLPtIYXbiu6MWhy8EZ77TogANu4VNk3/QfTx29Cin+XzU81W4wXsFQzE9KG71wGo1TtmI663Yxo="
-  - secure: "Q5VwjdrUYPNylK1GTttE6EoD2cV7ycH3g0DIfSOr2WWpz5xNQYNHBP6EZ1V9xQz4jzB5zayFkPFzeGznBIt+fiLIby+iY/qGEUCMcC9QY10JltxDQCrhwCYbrYtA8UJDTgbOjtig43kswuIL0fBK0BIAL+4UPjSifPDBMYr/M1M="
+- secure: "v45pjcogHNfXQyopD7gJRWHem9MeNqfViwSANlGBVt1XD5LgKqKlFKnLmq9HN8F+neUSwxGGYx/+sF8okLi5ax5qqNQVy5JsNLPtIYXbiu6MWhy8EZ77TogANu4VNk3/QfTx29Cin+XzU81W4wXsFQzE9KG71wGo1TtmI663Yxo="
+- secure: "Q5VwjdrUYPNylK1GTttE6EoD2cV7ycH3g0DIfSOr2WWpz5xNQYNHBP6EZ1V9xQz4jzB5zayFkPFzeGznBIt+fiLIby+iY/qGEUCMcC9QY10JltxDQCrhwCYbrYtA8UJDTgbOjtig43kswuIL0fBK0BIAL+4UPjSifPDBMYr/M1M="
   global:
     - APPNAME="Coveralls-iOS"
     - DESCRIPTION="Run test coverage and analyze"
