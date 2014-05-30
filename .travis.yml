@@ -1,5 +1,9 @@
 language: objective-c
 
+branches:
+  except:
+  - /build_.*$/
+
 before_install:
 - sudo easy_install cpp-coveralls
 - gem install xcpretty
