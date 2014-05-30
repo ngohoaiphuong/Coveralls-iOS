@@ -66,7 +66,7 @@ getCurrentPullRequest(){
 }
 
 generate_report(){
-  osascript coverstory.scpt coverage_report $HOME/coverage
+  osascript .utility/coverstory.scpt coverage_report $HOME/coverage
 }
 
 save_report(){
