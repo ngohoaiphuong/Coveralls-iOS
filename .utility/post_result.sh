@@ -27,6 +27,8 @@ getCurrentPullRequest(){
   local url_api=$1
 
   echo ">url=$url_api"
+  echo "curl -i https://api.github.com/users/whatever"
+  curl -i https://api.github.com/users/whatever
   response=`curl -s $url_api | sed -e 's/\[/\(/g' -e 's/\]/\)/g' | awk -F: '/(\"html_url\"\:)|(\"state\"\:)|(\"ref\"\:)|(\"comments_url\")/ {print}'`
   echo $response
   
