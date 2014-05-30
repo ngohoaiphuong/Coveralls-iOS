@@ -24,14 +24,13 @@ getValueFromKey(){
 }
 
 getCurrentPullRequest(){
-  local url_api=$1
+  url_api=$1
 
-  echo "url_api=$url_api"
-
-  response=`curl -s $url_api | sed -e 's/\[/\(/g' -e 's/\]/\)/g' | awk -F: '/(\"html_url\"\:)|(\"state\"\:)|(\"ref\"\:)/ {print}'`
+  response=`curl -s $url_api | sed -e 's/\[/\(/g' -e 's/\]/\)/g' | awk -F: '/(\"html_url\"\:)|(\"state\"\:)|(\"ref\"\:)|(\"comments_url\")/ {print}'`
   
   OIFS=$IFS
   IFS=','
+  comments_url=''
 
   tokens=($response)
   for (( i = 0; i < ${#tokens[@]}; i++ )); 
@@ -42,16 +41,20 @@ getCurrentPullRequest(){
     tokens[$i]=$result
 
     if [[ ${tokens[$i]} =~ (ref\:) ]]; then
-      getValueFromKey 'state:' ${tokens[$i-2]}
+      getValueFromKey 'state:' ${tokens[$i-3]}
       local status=$result
 
-      getValueFromKey 'html_url:' ${tokens[$i-3]}
+      getValueFromKey 'html_url:' ${tokens[$i-4]}
       local repository=$result
+
+      getValueFromKey 'comments_url:' ${tokens[$i-1]}
+      local comments=$result
 
       getValueFromKey 'ref:' ${tokens[$i]}
       if [[ $? == 1 && $result == $branch && $status == 'open' ]]; then
         #statements
         result=$repository
+        comments_url=$comments
         return 1
       fi
     fi
