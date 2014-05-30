@@ -108,7 +108,7 @@ push_2_report(){
   git commit -m "report build number $TRAVIS_BUILD_NUMBER for $name_branch pushed to travisci"
   git push -fq my_origin $link
 
-  link="https://rawgit.com/${report_repository}${link}/index.html"
+  link="https://rawgit.com/${report_repository}/${link}/index.html"
 
   echo "End export report for $name_branch"
 }
@@ -119,7 +119,6 @@ set_git_info(){
 }
 
 push_comment_2_pullrequest(){
-  message_str=$1
   echo "message:$message_str"
   curl -X POST -d "{\"body\":\"$message_str\"}" -H "Authorization: token ${GH_TOKEN}" $comments_url
 }
@@ -143,7 +142,7 @@ save_report(){
     if [[ -d $TRAVIS_BUILD_DIR/analyzer_report ]]; then
       #statements
       push_2_report $TRAVIS_BUILD_DIR/analyzer_report "analyzer"
-      comment_string="${comment_string}\\n[Run analyzer completed, Click here to view report]($link)"
+      comment_string="${comment_string}\\\\n[Run analyzer completed, Click here to view report]($link)"
       echo "2.comments:$comment_string"
     fi
 
