@@ -1,15 +1,12 @@
 export REPO="$(pwd | sed s,^/home/travis/build/,,g)"
-token="14266bb42129ae71c1412dcf0d0623b46b580986"
-gh_token=$1
 
 echo -e "Current Repo:$REPO --- Travis Branch:$TRAVIS_BRANCH"
 echo "TRAVIS_PULL_REQUEST = $TRAVIS_PULL_REQUEST"
 echo "TRAVIS_BUILD_NUMBER = $TRAVIS_BUILD_NUMBER"
-echo "GH_TOKEN = $gh_token"
+echo ">>>>>>GH_TOKEN=${GH_TOKEN}"
 list=`curl https://api.github.com/repos/ngohoaiphuong/Coveralls-iOS/pulls`
 echo '---------'
 # echo $list
-echo ">>>>>>GH_TOKEN=${GH_TOKEN}"
 
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo -e "Starting to update gh-pages\n"
@@ -43,7 +40,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo -e "Done magic with coverage\n"
 fi
 
-message_str="[Click here to view report](https://rawgit.com/ngohoaiphuong/Coveralls-iOS/ci-report/feature/build_$TRAVIS_BUILD_NUMBER/index.html)"
+message_str="[Analyzer completed, Click here to view report](https://rawgit.com/ngohoaiphuong/Coveralls-iOS/ci-report/feature/build_$TRAVIS_BUILD_NUMBER/index.html)"
 # curl -X POST -d "{\"body\":\"test add comment\"}" -H 'Authorization: token 14266bb42129ae71c1412dcf0d0623b46b580986' https://api.github.com/repos/ngohoaiphuong/Coveralls-iOS/issues/2/comments
 curl -X POST -d "{\"body\":\"$message_str\"}" -H "Authorization: token ${GH_TOKEN}" https://api.github.com/repos/ngohoaiphuong/Coveralls-iOS/issues/2/comments
 

@@ -12,6 +12,8 @@
 + (NSInteger)add:(NSInteger)aValue to:(NSInteger)bValue{
     NSString	*message;
     message = @"Result: canceled";
+    
+    NSString *template = @"pretty_template";
     return aValue + bValue;
 }
 @end
