@@ -26,9 +26,8 @@ getValueFromKey(){
 getCurrentPullRequest(){
   local url_api=$1
 
-  echo ">url=$url_api"
   echo "curl -i https://api.github.com/users/whatever"
-  curl -i https://api.github.com/users/whatever
+  curl -i 'https://api.github.com/users/whatever?client_id=d7f5c6567b209db57c67&client_secret=ba7ee1cd4879f8aad1c241723bf052cc058295d2'
   response=`curl -s $url_api | sed -e 's/\[/\(/g' -e 's/\]/\)/g' | awk -F: '/(\"html_url\"\:)|(\"state\"\:)|(\"ref\"\:)|(\"comments_url\")/ {print}'`
   
   OIFS=$IFS
@@ -54,13 +53,10 @@ getCurrentPullRequest(){
       local comments=$result
 
       getValueFromKey 'ref:' ${tokens[$i]}
-      echo "result=${BASH_REMATCH[2]}"
-      echo "$?|token=${tokens[$i]}|$result|$branch|$status|$repository"
       if [[ "$result" == "$branch" && "$status" == 'open' ]]; then
         #statements
         result=$repository
         comments_url=$comments
-        echo "::>>>comments_url>>>$comments_url"
         return 1
       fi
     fi
@@ -78,9 +74,40 @@ generate_report(){
 push_2_report(){
   local dir_html=$1
   local name_branch=$2
+
   echo "dir_html=$dir_html"
   echo "name_branch=$name_branch"
   echo "------------------------"
+
+  echo "Begin export report for $name_branch"
+
+  mkdir $HOME/$name_branch
+  cp -R dir_html $HOME/$name_branch
+  cd $HOME
+
+  git clone --depth=50 --branch=empty-template https://${report_token}@github.com/${report_repository}.git $HOME/${name_branch}_$TRAVIS_BUILD_NUMBER
+
+  cd ${name_branch}_$TRAVIS_BUILD_NUMBER
+
+  git remote -v
+
+  git remote add my_origin https://${report_token}@github.com/${report_repository}.git
+
+  git checkout -b ci-report/feature/build_${name_branch}_$TRAVIS_BUILD_NUMBER
+  git push -u my_origin ci-report/feature/build_${name_branch}_$TRAVIS_BUILD_NUMBER
+
+  if [[ "$name_branch" == "analyzer" ]]; then
+    #statements
+    cp -R $HOME/$name_branch/*/ .
+  else
+    cp -R $HOME/$name_branch/ .
+  fi
+
+  git add -f .
+  git commit -m "report build number $TRAVIS_BUILD_NUMBER for $name_branch pushed to travisci"
+  git push -fq my_origin ci-report/feature/build_${name_branch}_$TRAVIS_BUILD_NUMBER
+
+  echo "End export report for $name_branch"
 }
 
 set_git_info(){
@@ -114,7 +141,7 @@ export REPO="$(pwd | sed s,^/home/travis/build/,,g)"
 url_api='https://api.github.com/repos/'
 branch=$TRAVIS_BRANCH
 report_token=`perl -e "print pack 'H*','$1'"`
-echo $report_token
+report_repository="vfa-travisci/travisci.git"
 
 getValueFromKey '/Users/travis/build/' $TRAVIS_BUILD_DIR
 if [[ "$?" == 1 ]]; then
@@ -136,5 +163,5 @@ echo "TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR"
 echo "TRAVIS_REPO_SLUG=$TRAVIS_REPO_SLUG"
 echo "BRANCH=$branch"
 echo "GH_TOKEN=${GH_TOKEN}"
-echo "TRAVIS_TOKEN=${REPORT_TOKEN}"
+echo "TRAVIS_TOKEN=${report_token}"
 echo '-----------------------------'
