@@ -120,6 +120,7 @@ set_git_info(){
 
 push_comment_2_pullrequest(){
   message_str=$1
+  echo "message:$message_str"
   curl -X POST -d "{\"body\":\"$message_str\"}" -H "Authorization: token ${GH_TOKEN}" $comments_url
 }
 
@@ -136,7 +137,6 @@ save_report(){
       #statements
       push_2_report $HOME/coverage "coverage"
       comment_string="[Run coverage completed, Click here to view report]($link)"
-
     fi
 
     if [[ -d $TRAVIS_BUILD_DIR/analyzer_report ]]; then
