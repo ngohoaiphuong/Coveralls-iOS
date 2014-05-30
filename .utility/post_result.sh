@@ -120,7 +120,6 @@ if [[ "$?" == 1 ]]; then
   url_api="${url_api}${result}/pulls"
   echo "url_api=$url_api"
   getCurrentPullRequest $url_api
-  echo "result=$?"
   if [[ "$?" == 1 ]]; then
     #statements
     pull_request=$result
