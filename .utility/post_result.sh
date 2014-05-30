@@ -142,7 +142,7 @@ export REPO="$(pwd | sed s,^/home/travis/build/,,g)"
 url_api='https://api.github.com/repos/'
 branch=$TRAVIS_BRANCH
 report_token=`perl -e "print pack 'H*','$1'"`
-report_repository="vfa-travisci/travisci.git"
+report_repository="vfa-travisci/travisci"
 
 getValueFromKey '/Users/travis/build/' $TRAVIS_BUILD_DIR
 if [[ "$?" == 1 ]]; then
