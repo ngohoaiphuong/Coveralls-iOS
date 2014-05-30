@@ -66,6 +66,7 @@ getCurrentPullRequest(){
 }
 
 generate_report(){
+  ls '/Applications/CoverStory.app'
   osascript .utility/coverstory.scpt coverage_report $HOME/coverage
 }
 
