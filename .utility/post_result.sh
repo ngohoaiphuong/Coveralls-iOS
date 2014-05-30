@@ -30,12 +30,10 @@ getCurrentPullRequest(){
   echo "curl -i https://api.github.com/users/whatever"
   curl -i https://api.github.com/users/whatever
   response=`curl -s $url_api | sed -e 's/\[/\(/g' -e 's/\]/\)/g' | awk -F: '/(\"html_url\"\:)|(\"state\"\:)|(\"ref\"\:)|(\"comments_url\")/ {print}'`
-  echo $response
   
   OIFS=$IFS
   IFS=','
   comments_url=''
-  echo $response
   tokens=($response)
 
   for (( i = 0; i < ${#tokens[@]}; i++ )); 
@@ -45,7 +43,7 @@ getCurrentPullRequest(){
     trim ${tokens[$i]}
     tokens[$i]=$result
 
-    if [[ ${tokens[$i]} =~ (ref\:) ]]; then
+    if [[ ${tokens[$i]} =~ (ref\:)(.*) ]]; then
       getValueFromKey 'state:' ${tokens[$i-3]}
       local status=$result
 
@@ -56,8 +54,9 @@ getCurrentPullRequest(){
       local comments=$result
 
       getValueFromKey 'ref:' ${tokens[$i]}
+      echo "result=${BASH_REMATCH[2]}"
       echo "$?|token=${tokens[$i]}|$result|$branch|$status|$repository"
-      if [[ "$?" == "1" && "$result" == "$branch" && "$status" == 'open' ]]; then
+      if [[ "$result" == "$branch" && "$status" == 'open' ]]; then
         #statements
         result=$repository
         comments_url=$comments
