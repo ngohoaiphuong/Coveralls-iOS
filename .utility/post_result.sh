@@ -136,13 +136,15 @@ save_report(){
     if [[ -d $HOME/coverage ]]; then
       #statements
       push_2_report $HOME/coverage "coverage"
-      comment_string="[Run coverage completed, Click here to view report]($link)"
+      comment_string="\[Run coverage completed, Click here to view report\]($link)"
+      echo "1.comments:$comment_string"
     fi
 
     if [[ -d $TRAVIS_BUILD_DIR/analyzer_report ]]; then
       #statements
       push_2_report $TRAVIS_BUILD_DIR/analyzer_report "analyzer"
-      comment_string="${comment_string}\n[Run analyzer completed, Click here to view report]($link)"
+      comment_string="${comment_string}\\n\[Run analyzer completed, Click here to view report\]($link)"
+      echo "2.comments:$comment_string"
     fi
 
     if [[ "$comment_string" != '' ]]; then
