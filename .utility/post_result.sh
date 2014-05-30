@@ -51,7 +51,7 @@ getCurrentPullRequest(){
       local comments=$result
 
       getValueFromKey 'ref:' ${tokens[$i]}
-      echo "token=${tokens[$i]}|$result|$branch|$status|$repository"
+      echo "$?|token=${tokens[$i]}|$result|$branch|$status|$repository"
       if [[ $? == 1 && $result == $branch && $status == 'open' ]]; then
         #statements
         result=$repository
