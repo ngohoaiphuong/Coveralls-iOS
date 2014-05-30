@@ -13,7 +13,9 @@
     NSString	*message;
     message = @"Result: canceled";
     
-    NSString *template = @"pretty_template";
+    NSString *template;
+    
+    template = @"pretty_template";
     return aValue + bValue;
 }
 @end
