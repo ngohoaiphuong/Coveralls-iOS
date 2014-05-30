@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>B3B989C1-C4A9-4FCD-B076-A8D6151A6955</string>
+	<string>3E9FAA94-F20C-4055-A389-4F21C7216E55</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Coveralls-iOS</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>2AF86DFD-4A73-45E3-9EEF-A1F49C1A6E00</key>
-		<string>https://github.com/azu/Coveralls-iOS.git</string>
+		<key>AD7CBBB4-761A-41FA-9C6D-11443BD99944</key>
+		<string>https://github.com/ngohoaiphuong/Coveralls-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Coveralls-iOS.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>2AF86DFD-4A73-45E3-9EEF-A1F49C1A6E00</key>
+		<key>AD7CBBB4-761A-41FA-9C6D-11443BD99944</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/azu/Coveralls-iOS.git</string>
+	<string>https://github.com/ngohoaiphuong/Coveralls-iOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>2AF86DFD-4A73-45E3-9EEF-A1F49C1A6E00</string>
+	<string>AD7CBBB4-761A-41FA-9C6D-11443BD99944</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>2AF86DFD-4A73-45E3-9EEF-A1F49C1A6E00</string>
+			<string>AD7CBBB4-761A-41FA-9C6D-11443BD99944</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Coveralls-iOS</string>
 		</dict>
