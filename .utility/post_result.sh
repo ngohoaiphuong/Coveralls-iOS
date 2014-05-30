@@ -80,5 +80,7 @@ echo '-----------------------------'
 echo "REPOSITORY=$REPO"
 echo "TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR"
 echo "TRAVIS_REPO_SLUG=$TRAVIS_REPO_SLUG"
+echo "BRANCH=$branch"
 echo "GH_TOKEN=${GH_TOKEN}"
+echo "TRAVIS_TOKEN=${TRAVIS_TOKEN}"
 echo '-----------------------------'
