@@ -81,16 +81,13 @@ push_2_report(){
 
   echo "Begin export report for $name_branch"
 
-  mkdir $HOME/report_$name_branch
+  # mkdir $HOME/report_$name_branch
   cp -R $dir_html $HOME/report_$name_branch
   cd $HOME
 
-  echo "CMD:https://${report_token}@github.com/${report_repository}.git $HOME/${name_branch}_$TRAVIS_BUILD_NUMBER"
   git clone --depth=50 --branch=empty-template https://${report_token}@github.com/${report_repository}.git $HOME/${name_branch}_$TRAVIS_BUILD_NUMBER
 
   cd ${name_branch}_$TRAVIS_BUILD_NUMBER
-
-  git remote -v
 
   git remote add my_origin https://${report_token}@github.com/${report_repository}.git
 
@@ -99,6 +96,7 @@ push_2_report(){
 
   if [[ "$name_branch" == "analyzer" ]]; then
     #statements
+    echo "copy all file of branch $name_branch"
     cp -R $HOME/report_$name_branch/*/ .
   else
     cp -R $HOME/report_$name_branch/ .
@@ -126,7 +124,7 @@ save_report(){
 
     if [[ -d $HOME/coverage ]]; then
       #statements
-      push_2_report $TRAVIS_BUILD_DIR/coverage_report "coverage"
+      push_2_report $HOME/coverage "coverage"
     fi
 
     if [[ -d $TRAVIS_BUILD_DIR/analyzer_report ]]; then
