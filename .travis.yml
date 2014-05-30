@@ -16,3 +16,4 @@ env:
   global:
   - APPNAME="Coveralls-iOS"
   - secure: "v45pjcogHNfXQyopD7gJRWHem9MeNqfViwSANlGBVt1XD5LgKqKlFKnLmq9HN8F+neUSwxGGYx/+sF8okLi5ax5qqNQVy5JsNLPtIYXbiu6MWhy8EZ77TogANu4VNk3/QfTx29Cin+XzU81W4wXsFQzE9KG71wGo1TtmI663Yxo="
+  - secure: "O6HjErWl+yDT7GceqKf15cBnNncMzON4ekYQPrpYHKILVViWBr4A8jIMRALtehtyo5PaLSZ929CTgSsv0YbXxOZ2yN+s8ANafOe7RVuUbSbEQZwESUCqkSPB+hv6hd1hUtTLfq/4WVwz5Hopj/pt5hMsFpwNN4mrlhaLHL4TfRA="
