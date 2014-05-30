@@ -24,7 +24,7 @@ getValueFromKey(){
 }
 
 getCurrentPullRequest(){
-  url_api=$1
+  local url_api=$1
 
   response=`curl -s $url_api | sed -e 's/\[/\(/g' -e 's/\]/\)/g' | awk -F: '/(\"html_url\"\:)|(\"state\"\:)|(\"ref\"\:)|(\"comments_url\")/ {print}'`
   
@@ -51,6 +51,7 @@ getCurrentPullRequest(){
       local comments=$result
 
       getValueFromKey 'ref:' ${tokens[$i]}
+      echo "token=${tokens[$i]}"
       if [[ $? == 1 && $result == $branch && $status == 'open' ]]; then
         #statements
         result=$repository
@@ -114,6 +115,7 @@ if [[ $? == 1 ]]; then
   url_api="${url_api}${result}/pulls"
   echo "url_api=$url_api"
   getCurrentPullRequest $url_api
+  echo "result=$?"
   if [[ $? == 1 ]]; then
     #statements
     pull_request=$result
