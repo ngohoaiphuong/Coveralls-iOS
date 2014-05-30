@@ -81,10 +81,11 @@ push_2_report(){
 
   echo "Begin export report for $name_branch"
 
-  mkdir $HOME/$name_branch
-  cp -R dir_html $HOME/$name_branch
+  mkdir $HOME/report_$name_branch
+  cp -R $dir_html $HOME/report_$name_branch
   cd $HOME
 
+  echo "CMD:https://${report_token}@github.com/${report_repository}.git $HOME/${name_branch}_$TRAVIS_BUILD_NUMBER"
   git clone --depth=50 --branch=empty-template https://${report_token}@github.com/${report_repository}.git $HOME/${name_branch}_$TRAVIS_BUILD_NUMBER
 
   cd ${name_branch}_$TRAVIS_BUILD_NUMBER
@@ -98,9 +99,9 @@ push_2_report(){
 
   if [[ "$name_branch" == "analyzer" ]]; then
     #statements
-    cp -R $HOME/$name_branch/*/ .
+    cp -R $HOME/report_$name_branch/*/ .
   else
-    cp -R $HOME/$name_branch/ .
+    cp -R $HOME/report_$name_branch/ .
   fi
 
   git add -f .
@@ -130,7 +131,7 @@ save_report(){
 
     if [[ -d $TRAVIS_BUILD_DIR/analyzer_report ]]; then
       #statements
-      push_2_report analyzer_report "analyzer"
+      push_2_report $TRAVIS_BUILD_DIR/analyzer_report "analyzer"
     fi
 
     echo -e "End process data report"    
