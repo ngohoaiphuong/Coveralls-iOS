@@ -65,6 +65,18 @@ getCurrentPullRequest(){
   return 0
 }
 
+generate_report(){
+  osascript coverstory.scpt coverage_report $HOME/coverage
+}
+
+save_report(){
+  if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+    echo -e "Starting process data report\n"
+    generate_report
+    echo -e "End process data report\n"    
+  fi
+}
+
 export REPO="$(pwd | sed s,^/home/travis/build/,,g)"
 url_api='https://api.github.com/repos/'
 branch=$TRAVIS_BRANCH
@@ -77,8 +89,8 @@ if [[ $? == 1 ]]; then
   getCurrentPullRequest $url_api
   if [[ $? == 1 ]]; then
     #statements
-    echo "repository=$result"
-    echo "comments=$comments_url"
+    pull_request=$result
+    save_report
   fi
 fi
 
