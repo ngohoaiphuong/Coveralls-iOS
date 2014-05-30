@@ -12,12 +12,11 @@ script:
 - ./checker-276/scan-build -o analyzer_report xcodebuild -sdk iphonesimulator clean analyze 
 
 after_success:
-- pwd
-- ls coverage_report | sed "s;^;`pwd`;"
 - .utility/post_result.sh
 
 env:
   global:
-    - APPNAME="Coveralls-iOS"
-    - DESCRIPTION="Run test coverage and analyze"
-    - secure: "GNH1xmul6peVsq+b7DIV1j0+A8udKptYoFIzwyJdP2US7gsZ3IWA8sB/Ox+0lBRouyM9eI8HMIYbxxA4v0c2xyJPEgfQe6PIr0QDsvETWJDrRel6fN6bkW6qiLE5AAjvphh5JGvOM8cLX3tpN94lTvQKS/hYCj+PsTer4kwKQt8="
+  - APPNAME="Coveralls-iOS"
+  - DESCRIPTION="Run test coverage and analyze"
+  - secure: "GNH1xmul6peVsq+b7DIV1j0+A8udKptYoFIzwyJdP2US7gsZ3IWA8sB/Ox+0lBRouyM9eI8HMIYbxxA4v0c2xyJPEgfQe6PIr0QDsvETWJDrRel6fN6bkW6qiLE5AAjvphh5JGvOM8cLX3tpN94lTvQKS/hYCj+PsTer4kwKQt8="
+  - secure: "v45pjcogHNfXQyopD7gJRWHem9MeNqfViwSANlGBVt1XD5LgKqKlFKnLmq9HN8F+neUSwxGGYx/+sF8okLi5ax5qqNQVy5JsNLPtIYXbiu6MWhy8EZ77TogANu4VNk3/QfTx29Cin+XzU81W4wXsFQzE9KG71wGo1TtmI663Yxo="

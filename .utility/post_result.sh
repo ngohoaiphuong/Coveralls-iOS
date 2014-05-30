@@ -26,7 +26,9 @@ getValueFromKey(){
 getCurrentPullRequest(){
   local url_api=$1
 
+  echo ">url=$url_api"
   response=`curl -s $url_api | sed -e 's/\[/\(/g' -e 's/\]/\)/g' | awk -F: '/(\"html_url\"\:)|(\"state\"\:)|(\"ref\"\:)|(\"comments_url\")/ {print}'`
+  echo $response
   
   OIFS=$IFS
   IFS=','
@@ -72,8 +74,8 @@ generate_report(){
 }
 
 push_2_report(){
-  dir_html=$1
-  name_branch=$2
+  local dir_html=$1
+  local name_branch=$2
   echo "dir_html=$dir_html"
   echo "name_branch=$name_branch"
   echo "------------------------"
