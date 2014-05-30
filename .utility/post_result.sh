@@ -62,6 +62,7 @@ getCurrentPullRequest(){
 
 export REPO="$(pwd | sed s,^/home/travis/build/,,g)"
 url_api='https://api.github.com/repos/'
+branch=$TRAVIS_BRANCH
 
 getValueFromKey '/Users/travis/build/' $TRAVIS_BUILD_DIR
 if [[ $? == 1 ]]; then
