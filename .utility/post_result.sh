@@ -102,9 +102,13 @@ push_2_report(){
     cp -R $HOME/report_$name_branch/ .
   fi
 
+  link="ci-report/feature/build_${name_branch}_$TRAVIS_BUILD_NUMBER"
+
   git add -f .
   git commit -m "report build number $TRAVIS_BUILD_NUMBER for $name_branch pushed to travisci"
-  git push -fq my_origin ci-report/feature/build_${name_branch}_$TRAVIS_BUILD_NUMBER
+  git push -fq my_origin $link
+
+  link="https://rawgit.com/${report_repository}${link}/index.html"
 
   echo "End export report for $name_branch"
 }
@@ -114,6 +118,11 @@ set_git_info(){
   git config --global user.name "Travis"
 }
 
+push_comment_2_pullrequest(){
+  message_str=$1
+  curl -X POST -d "{\"body\":\"$message_str\"}" -H "Authorization: token ${GH_TOKEN}" $comments_url
+}
+
 save_report(){
   if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     echo -e "Starting process data report"
@@ -121,15 +130,24 @@ save_report(){
     generate_report
 
     set_git_info
+    local comment_string=''
 
     if [[ -d $HOME/coverage ]]; then
       #statements
       push_2_report $HOME/coverage "coverage"
+      comment_string="[Run coverage completed, Click here to view report]($link)"
+
     fi
 
     if [[ -d $TRAVIS_BUILD_DIR/analyzer_report ]]; then
       #statements
       push_2_report $TRAVIS_BUILD_DIR/analyzer_report "analyzer"
+      comment_string="${comment_string}\n[Run analyzer completed, Click here to view report]($link)"
+    fi
+
+    if [[ "$comment_string" != '' ]]; then
+      #statements
+      push_comment_2_pullrequest $comment_string
     fi
 
     echo -e "End process data report"    
