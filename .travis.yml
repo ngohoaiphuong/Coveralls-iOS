@@ -5,8 +5,7 @@ branches:
   - /build_.*$/
 
 before_install:
-- sudo easy_install cpp-coveralls
-- gem install xcpretty
+- chmod +x .utility/post_result.sh
 - wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
 - tar -xvjf checker-276.tar.bz2
 
