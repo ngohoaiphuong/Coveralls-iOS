@@ -31,8 +31,8 @@ getCurrentPullRequest(){
   OIFS=$IFS
   IFS=','
   comments_url=''
-  echo $response
   tokens=($response)
+
   for (( i = 0; i < ${#tokens[@]}; i++ )); 
   do
     #statements
@@ -51,7 +51,7 @@ getCurrentPullRequest(){
       local comments=$result
 
       getValueFromKey 'ref:' ${tokens[$i]}
-      echo "token=${tokens[$i]}"
+      echo "token=${tokens[$i]}|$result|$branch|$status|$repository"
       if [[ $? == 1 && $result == $branch && $status == 'open' ]]; then
         #statements
         result=$repository
