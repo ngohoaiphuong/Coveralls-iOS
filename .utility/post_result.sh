@@ -119,9 +119,10 @@ set_git_info(){
 }
 
 push_comment_2_pullrequest(){
-  message_str="[Analyzer completed]($2) [Run coverage completed]($1)"
-
-  curl -X POST -d "{\"body\":\"${message_str}\"}" -H "Authorization: token ${GH_TOKEN}" $comments_url
+  # message_str="[Analyzer completed]($2) [Run coverage completed]($1)"
+  # curl -X POST -d "{\"body\":\"${message_str}\"}" -H "Authorization: token ${GH_TOKEN}" $comments_url
+  message_html="<html><div><a href='$1' target='_blank'>Measure Coverage Result</a></div><div><a href='$2' target='_blank'>Analyzer Result</a></div></html>"
+  curl -X POST -d "{\"body\":\"${message_html}\"}" -H "Authorization: token ${GH_TOKEN}" $comments_url
 }
 
 save_report(){
