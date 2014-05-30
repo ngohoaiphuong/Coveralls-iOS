@@ -55,10 +55,11 @@ getCurrentPullRequest(){
 
       getValueFromKey 'ref:' ${tokens[$i]}
       echo "$?|token=${tokens[$i]}|$result|$branch|$status|$repository"
-      if [[ $? == 1 && $result == $branch && $status == 'open' ]]; then
+      if [[ "$?" == "1" && "$result" == "$branch" && "$status" == 'open' ]]; then
         #statements
         result=$repository
         comments_url=$comments
+        echo "::>>>comments_url>>>$comments_url"
         return 1
       fi
     fi
