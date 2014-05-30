@@ -16,12 +16,8 @@ script:
 
 after_success:
 - ls report
-- .utility/update-gh-pages.sh
+- .utility/post_result.sh
 - ls /Users/travis/*
-- coveralls -e checker-276
-- brew -h
-- sed -h
-- awk
 
 env:
   global:
