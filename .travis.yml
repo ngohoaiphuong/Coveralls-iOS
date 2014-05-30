@@ -10,13 +10,11 @@ before_install:
 - tar -xvjf checker-276.tar.bz2
 
 script:
-- xcodebuild clean test -sdk iphonesimulator -configuration Debug OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES | xcpretty
+- xcodebuild clean test -sdk iphonesimulator -configuration Debug OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
 - ./checker-276/scan-build -o report xcodebuild -sdk iphonesimulator clean analyze 
 
 after_success:
-- ls report
 - .utility/post_result.sh
-- ls /Users/travis/*
 
 env:
   global:
