@@ -165,7 +165,7 @@ save_report(){
 
     set_git_info
 
-    if [[ -d $HOME/coverage && "$which_branch" == 'coverage']]; then
+    if [[ -d $HOME/coverage && "$which_branch" == 'coverage' ]]; then
       #statements
       push_2_report $HOME/coverage "coverage"
       coverage_link=$link
