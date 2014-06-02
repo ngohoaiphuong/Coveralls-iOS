@@ -1,22 +1,24 @@
 language: objective-c
 
 before_install:
-- chmod +x .utility/post_result.sh
-- wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
-- tar -xvjf checker-276.tar.bz2
-- svn checkout http://coverstory.googlecode.com/svn/trunk/ "$HOME/coverstory-read-only"
+- chmod +x .utility/save_report.sh
+- chmod +x .utility/coverage.sh
+- chmod +x .utility/analyzer.sh
 
 script:
-- xcodebuild build -project $HOME/coverstory-read-only/CoverStory.xcodeproj CONFIGURATION_BUILD_DIR="/Applications"
-- xcodebuild clean test -sdk iphonesimulator -project Coveralls-iOS.xcodeproj -scheme ci -configuration Debug OBJROOT=coverage_report ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
-- ./checker-276/scan-build -o analyzer_report xcodebuild -sdk iphonesimulator clean analyze 
+- .utility/coverage.sh
+- .utility/analyzer.sh
 
 after_success:
-- .utility/post_result.sh $REPORT_TOKEN
 
 env:
   global:
-  - APPNAME="Coveralls-iOS"
-  - DESCRIPTION="Run test coverage and analyze"
-  - REPORT_TOKEN="35636266373463666535653265396232363437393536396134633239616666326232366339393065"
-  - secure: "v45pjcogHNfXQyopD7gJRWHem9MeNqfViwSANlGBVt1XD5LgKqKlFKnLmq9HN8F+neUSwxGGYx/+sF8okLi5ax5qqNQVy5JsNLPtIYXbiu6MWhy8EZ77TogANu4VNk3/QfTx29Cin+XzU81W4wXsFQzE9KG71wGo1TtmI663Yxo="
+    - APPNAME="Coveralls-iOS"
+    - DESCRIPTION="Run test coverage and analyze"
+    # enviroment for report
+    - REPORT_TOKEN="35636266373463666535653265396232363437393536396134633239616666326232366339393065"
+    - COVERAGE_DIR="coverage_report"
+    - ANALYZER_DIR="analyzer_report"
+    - SLACK_CHANNEL="ci-report"
+    #
+    - secure: "v45pjcogHNfXQyopD7gJRWHem9MeNqfViwSANlGBVt1XD5LgKqKlFKnLmq9HN8F+neUSwxGGYx/+sF8okLi5ax5qqNQVy5JsNLPtIYXbiu6MWhy8EZ77TogANu4VNk3/QfTx29Cin+XzU81W4wXsFQzE9KG71wGo1TtmI663Yxo="
