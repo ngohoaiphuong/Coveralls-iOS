@@ -168,15 +168,15 @@ save_report(){
     if [[ -d $HOME/coverage && "$which_branch" == 'coverage' ]]; then
       #statements
       push_2_report $HOME/coverage "coverage"
-      coverage_link=$link
-      coverage_repository=$link_repository
+      export coverage_link=$link
+      export coverage_repository=$link_repository
     fi
 
     if [[ -d $TRAVIS_BUILD_DIR/analyzer_report  && "$which_branch" == 'analyzer' ]]; then
       #statements
       push_2_report $TRAVIS_BUILD_DIR/analyzer_report "analyzer"
-      analyzer_link=$link
-      analyzer_repository=$link_repository
+      export analyzer_link=$link
+      export analyzer_repository=$link_repository
     fi
 
     # if [[ "$coverage_link" != '' ]]; then
@@ -203,7 +203,7 @@ report_repository="vfa-travisci/travisci"
 
 coverage_branch="test-report/${branch}/coverage/build_${TRAVIS_BUILD_NUMBER}"
 analyzer_branch="test-report/${branch}/analyzer/build_${TRAVIS_BUILD_NUMBER}"
-slack_channel=$2
+slack_channel=$SLACK_CHANNEL
 
 echo '-----------------------------'
 echo "REPOSITORY=$REPO"
