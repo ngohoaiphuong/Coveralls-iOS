@@ -145,7 +145,7 @@ push_comment_2_pullrequest(){
 
 push_comment_2_slack(){
   payload="{\"channel\":\"#${slack_channel}\", \"username\": \"Travis CI\", \"text\":\"Coverage and Analyzer code completed\""
-  payload="${payload},\"attachments\":[{\"pretext\":\"You can get coverage build directory $1\",\"fields\":[{\"title\":\"Notes\",\"value\":\"You can view result online at $2\"}]}]"
+  payload="${payload},\"attachments\":[{\"pretext\":\"You can get coverage build directory $1\",\"fields\":[{\"title\":\"Notes\",\"value\":\"You can view result online at $2\"}]}, {\"pretext\":\"You can get analyzer build directory $3\",\"fields\":[{\"title\":\"Notes\",\"value\":\"You can view result online at $4\"}]}]"
   payload="${payload},\"icon_url\":\"https://s3-us-west-2.amazonaws.com/slack-files2/bot_icons/2014-05-22/2351865235_48.png\"}"
 
   cmd="curl -X POST --data-urlencode 'payload=${payload}' https://ygo.slack.com/services/hooks/incoming-webhook\?token\=lz25ioqy6NTAUO4BshDh2yWb"
