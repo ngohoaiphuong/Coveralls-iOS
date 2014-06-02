@@ -145,20 +145,14 @@ push_comment_2_pullrequest(){
 }
 
 push_comment_2_slack(){
-  coverage_link="https://rawgit.com/${report_repository}/${coverage_branch}/index.html"
-  coverage_repository="https://github.com/${report_repository}/tree/${coverage_branch}"
+  local coverage_link="https://rawgit.com/${report_repository}/${coverage_branch}/index.html"
+  local coverage_repository="https://github.com/${report_repository}/tree/${coverage_branch}"
 
-  analyzer_link="https://rawgit.com/${report_repository}/${analyzer_branch}/index.html"
-  analyzer_repository="https://github.com/${report_repository}/tree/${analyzer_branch}"
-
-  echo "coverage_link=$coverage_link"
-  echo "coverage_repository=$coverage_repository"
-  echo "----------"
-  echo "analyzer_link=$analyzer_link"
-  echo "analyzer_repository=$analyzer_repository"
+  local analyzer_link="https://rawgit.com/${report_repository}/${analyzer_branch}/index.html"
+  local analyzer_repository="https://github.com/${report_repository}/tree/${analyzer_branch}"
 
   payload="{\"channel\":\"#${slack_channel}\", \"username\": \"Travis CI\", \"text\":\"Coverage and Analyzer code completed\""
-  payload="${payload},\"attachments\":[{\"pretext\":\"You can get coverage build directory $1\",\"fields\":[{\"title\":\"Notes\",\"value\":\"You can view result online at $2\"}]}, {\"pretext\":\"You can get analyzer build directory $3\",\"fields\":[{\"title\":\"Notes\",\"value\":\"You can view result online at $4\"}]}]"
+  payload="${payload},\"attachments\":[{\"pretext\":\"You can get coverage build directory ${coverage_repository}\",\"fields\":[{\"title\":\"Notes\",\"value\":\"You can view result online at ${coverage_link}\"}]}, {\"pretext\":\"You can get analyzer build directory ${analyzer_repository}\",\"fields\":[{\"title\":\"Notes\",\"value\":\"You can view result online at ${analyzer_link}\"}]}]"
   payload="${payload},\"icon_url\":\"https://s3-us-west-2.amazonaws.com/slack-files2/bot_icons/2014-05-22/2351865235_48.png\"}"
 
   cmd="curl -X POST --data-urlencode 'payload=${payload}' https://ygo.slack.com/services/hooks/incoming-webhook\?token\=lz25ioqy6NTAUO4BshDh2yWb"
@@ -182,7 +176,6 @@ save_report(){
       #statements
       push_2_report $HOME/coverage "coverage"
       coverage_link=$link
-      export COVERAGE_LINK='ngohoai'
       coverage_repository=$link_repository
     fi
 
@@ -232,7 +225,7 @@ echo '-----------------------------'
 
 if [[ "$2" == "send_message" ]]; then
   #statements
-  push_comment_2_slack $COVERAGE_REPOSITORY $COVERAGE_LINK $ANALYZER_REPOSITORY $ANALYZER_LINK
+  push_comment_2_slack 
 else
   save_report $2
 fi

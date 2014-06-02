@@ -15,13 +15,8 @@ script:
 - cp -R CoverStory.app /Applications
 - cd ..
 - xcodebuild clean test -sdk iphonesimulator -project "$APPNAME.xcodeproj" -scheme ci -configuration Debug OBJROOT=$COVERAGE_DIR ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
-- export COVERAGE_LINK='nhp'
-- echo "1.Coverage link=$COVERAGE_LINK"
 - .utility/save_report.sh $REPORT_TOKEN "coverage"
 - rm -rf $TRAVIS_BUILD_DIR/$COVERAGE_DIR
-- echo "2.Coverage link=$COVERAGE_LINK"
-- export COVERAGE_LINK=$coverage_link
-- export COVERAGE_REPOSITORY=$coverage_repository
 
 # build analyzer directory
 - wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
@@ -30,8 +25,6 @@ script:
 - ./checker-276/scan-build -o $ANALYZER_DIR xcodebuild -project "$APPNAME.xcodeproj" -configuration Debug -sdk iphonesimulator clean analyze 
 - .utility/save_report.sh $REPORT_TOKEN "analyzer"
 - rm -rf $TRAVIS_BUILD_DIR/$ANALYZER_DIR
-- export ANALYZER_LINK=$analyzer_link
-- export ANALYZER_REPOSITORY=$analyzer_repository
 
 after_success:
 - .utility/save_report.sh $REPORT_TOKEN "send_message"
