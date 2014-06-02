@@ -68,6 +68,7 @@ getCurrentPullRequest(){
 }
 
 generate_report(){
+  echo "osascript .utility/coverstory.scpt $TRAVIS_BUILD_DIR/coverage_report $HOME/coverage"
   osascript .utility/coverstory.scpt $TRAVIS_BUILD_DIR/coverage_report $HOME/coverage
 }
 
