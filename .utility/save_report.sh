@@ -168,15 +168,15 @@ save_report(){
     if [[ -d $HOME/coverage && "$which_branch" == 'coverage' ]]; then
       #statements
       push_2_report $HOME/coverage "coverage"
-      export coverage_link=$link
-      export coverage_repository=$link_repository
+      export COVERAGE_LINK=$link
+      export COVERAGE_REPOSITORY=$link_repository
     fi
 
     if [[ -d $TRAVIS_BUILD_DIR/analyzer_report  && "$which_branch" == 'analyzer' ]]; then
       #statements
       push_2_report $TRAVIS_BUILD_DIR/analyzer_report "analyzer"
-      export analyzer_link=$link
-      export analyzer_repository=$link_repository
+      export ANALYZER_LINK=$link
+      export ANALYZER_REPOSITORY=$link_repository
     fi
 
     # if [[ "$coverage_link" != '' ]]; then
@@ -218,7 +218,7 @@ echo '-----------------------------'
 
 if [[ "$2" == "send_message" ]]; then
   #statements
-  push_comment_2_slack $coverage_repository $coverage_link $analyzer_repository $analyzer_link
+  push_comment_2_slack $COVERAGE_REPOSITORY $COVERAGE_LINK $ANALYZER_REPOSITORY $ANALYZER_LINK
 else
   save_report $2
 fi
