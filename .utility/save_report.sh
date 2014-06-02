@@ -170,6 +170,7 @@ save_report(){
       #statements
       push_2_report $HOME/coverage "coverage"
       coverage_link=$link
+      $COVERAGE_LINK='ngohoai'
       coverage_repository=$link_repository
     fi
 
