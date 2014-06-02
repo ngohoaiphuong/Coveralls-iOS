@@ -216,6 +216,11 @@ echo "coverage_branch=${coverage_branch}"
 echo "analyzer_branch=${analyzer_branch}"
 echo '-----------------------------'
 
-save_report $2
+if [[ "$2" == "send_message" ]]; then
+  #statements
+  push_comment_2_slack $coverage_repository $coverage_link $analyzer_repository $analyzer_link
+else
+  save_report $2
+fi
 
 # push_comment_2_slack $coverage_branch $analyzer_branch

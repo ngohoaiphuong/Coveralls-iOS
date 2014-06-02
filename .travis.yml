@@ -23,6 +23,7 @@ script:
 - rm -rf $TRAVIS_BUILD_DIR/$ANALYZER_DIR
 
 after_success:
+- .utility/save_report.sh $REPORT_TOKEN "send_message"
 
 env:
   global:
