@@ -218,6 +218,7 @@ echo '-----------------------------'
 
 if [[ "$2" == "send_message" ]]; then
   #statements
+  echo $TEST_TEST
   push_comment_2_slack $COVERAGE_REPOSITORY $COVERAGE_LINK $ANALYZER_REPOSITORY $ANALYZER_LINK
 else
   save_report $2

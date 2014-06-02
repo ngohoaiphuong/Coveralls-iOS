@@ -7,20 +7,21 @@ before_install:
 
 script:
 # build coverage directory
-- svn checkout http://coverstory.googlecode.com/svn/trunk/ "$HOME/coverstory-read-only"
-- xcodebuild build -project $HOME/coverstory-read-only/CoverStory.xcodeproj CONFIGURATION_BUILD_DIR="/Applications"
-- rm -rf "$HOME/coverstory-read-only"
-- xcodebuild clean test -sdk iphonesimulator -project "$APPNAME.xcodeproj" -scheme ci -configuration Debug OBJROOT=$COVERAGE_DIR ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
-- .utility/save_report.sh $REPORT_TOKEN "coverage"
-- rm -rf $TRAVIS_BUILD_DIR/$COVERAGE_DIR
+# - svn checkout http://coverstory.googlecode.com/svn/trunk/ "$HOME/coverstory-read-only"
+# - xcodebuild build -project $HOME/coverstory-read-only/CoverStory.xcodeproj CONFIGURATION_BUILD_DIR="/Applications"
+# - rm -rf "$HOME/coverstory-read-only"
+# - xcodebuild clean test -sdk iphonesimulator -project "$APPNAME.xcodeproj" -scheme ci -configuration Debug OBJROOT=$COVERAGE_DIR ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
+# - .utility/save_report.sh $REPORT_TOKEN "coverage"
+# - rm -rf $TRAVIS_BUILD_DIR/$COVERAGE_DIR
 
 # build analyzer directory
-- wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
-- tar -xvjf checker-276.tar.bz2
-- rm checker-276.tar.bz2
-- ./checker-276/scan-build -o $ANALYZER_DIR xcodebuild -project "$APPNAME.xcodeproj" -configuration Debug -sdk iphonesimulator clean analyze 
-- .utility/save_report.sh $REPORT_TOKEN "analyzer"
-- rm -rf $TRAVIS_BUILD_DIR/$ANALYZER_DIR
+# - wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
+# - tar -xvjf checker-276.tar.bz2
+# - rm checker-276.tar.bz2
+# - ./checker-276/scan-build -o $ANALYZER_DIR xcodebuild -project "$APPNAME.xcodeproj" -configuration Debug -sdk iphonesimulator clean analyze 
+# - .utility/save_report.sh $REPORT_TOKEN "analyzer"
+# - rm -rf $TRAVIS_BUILD_DIR/$ANALYZER_DIR
+- export TEST_TEST='ngohoaiphuong'
 
 after_success:
 - .utility/save_report.sh $REPORT_TOKEN "send_message"
