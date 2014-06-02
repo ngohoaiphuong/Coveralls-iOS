@@ -83,7 +83,7 @@ push_2_report(){
 
   cp -R $dir_html $HOME/report_$name_branch
   cd $HOME
-  rm -r $dir_html
+  rm -rf $dir_html
 
   git clone --depth=50 --branch=empty-template https://${report_token}@github.com/${report_repository}.git $HOME/${name_branch}_$TRAVIS_BUILD_NUMBER
 
@@ -114,7 +114,7 @@ push_2_report(){
     link=$coverage_branch
   fi
 
-  rm -r $HOME/report_$name_branch
+  rm -rf $HOME/report_$name_branch
 
   git add -f .
   git commit -m "report build number $TRAVIS_BUILD_NUMBER for $name_branch pushed to travisci"
@@ -128,7 +128,7 @@ push_2_report(){
   #remove all data
   cd $HOME
 
-  rm -r $HOME/${name_branch}_$TRAVIS_BUILD_NUMBER
+  rm -rf $HOME/${name_branch}_$TRAVIS_BUILD_NUMBER
 }
 
 set_git_info(){
