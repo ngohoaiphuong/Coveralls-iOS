@@ -81,9 +81,9 @@ push_2_report(){
 
   echo "Begin export report for $name_branch"
 
-  # mkdir $HOME/report_$name_branch
   cp -R $dir_html $HOME/report_$name_branch
   cd $HOME
+  rm -r $dir_html
 
   git clone --depth=50 --branch=empty-template https://${report_token}@github.com/${report_repository}.git $HOME/${name_branch}_$TRAVIS_BUILD_NUMBER
 
@@ -97,9 +97,6 @@ push_2_report(){
   else
     link=$coverage_branch
   fi
-
-  # git checkout -b ci-report/feature/build_${name_branch}_$TRAVIS_BUILD_NUMBER
-  # git push -u my_origin ci-report/feature/build_${name_branch}_$TRAVIS_BUILD_NUMBER
 
   git checkout -b $link
   git push -u my_origin $link
@@ -117,6 +114,8 @@ push_2_report(){
     link=$coverage_branch
   fi
 
+  rm -r $HOME/report_$name_branch
+
   git add -f .
   git commit -m "report build number $TRAVIS_BUILD_NUMBER for $name_branch pushed to travisci"
   git push -fq my_origin $link
@@ -125,6 +124,11 @@ push_2_report(){
   link="https://rawgit.com/${report_repository}/${link}/index.html"
 
   echo "End export report for $name_branch"
+  
+  #remove all data
+  cd $HOME
+
+  rm -r $HOME/${name_branch}_$TRAVIS_BUILD_NUMBER
 }
 
 set_git_info(){
@@ -140,58 +144,52 @@ push_comment_2_pullrequest(){
 }
 
 push_comment_2_slack(){
-  # curl -X POST --data-urlencode 
-  # 'payload={"channel": "#ci-report", "username": "vfa-phuongnh testing", "text": "testing send information from api.", 
-  # "attachments": [{"fallback":"New open task [Urgent]:https://rawgit.com/vfa-travisci/travisci/ci-report/feature/
-  # build_coverage_143/index.html", "pretext":"Run completed:https://rawgit.com/vfa-travisci/travisci/ci-report/feature/
-  # build_analyzer_143/index.html", "color":"#D00000", "fields":[{"title":"Notes",
-  # "value":"This is much easier than I thought it would be.","short":false}]}] , 
-  # "icon_url": "https://s3-us-west-2.amazonaws.com/slack-files2/bot_icons/2014-05-22/2351865235_48.png"}' 
-  # https://ygo.slack.com/services/hooks/incoming-webhook\?token\=lz25ioqy6NTAUO4BshDh2yWb
-
-  # payload="{'channel':'${slack_channel}', 'username': 'Travis CI', 'text':'Coverage and Analyzer code completed'"
-  # payload="${payload},'attachments':[{'pretext':'You can get coverage build directory $1','fields':[{'title':'Notes','value':'You can view result online at $2'}]},{'pretext':'You can get analyzer build directory $3','fields':[{'title':'Notes','value':'You can view result online at $4'}]}]"
-  # payload="${payload},'icon_url':'https://s3-us-west-2.amazonaws.com/slack-files2/bot_icons/2014-05-22/2351865235_48.png'}"
-
   payload="{\"channel\":\"#${slack_channel}\", \"username\": \"Travis CI\", \"text\":\"Coverage and Analyzer code completed\""
   payload="${payload},\"attachments\":[{\"pretext\":\"You can get coverage build directory $1\",\"fields\":[{\"title\":\"Notes\",\"value\":\"You can view result online at $2\"}]}]"
   payload="${payload},\"icon_url\":\"https://s3-us-west-2.amazonaws.com/slack-files2/bot_icons/2014-05-22/2351865235_48.png\"}"
 
   cmd="curl -X POST --data-urlencode 'payload=${payload}' https://ygo.slack.com/services/hooks/incoming-webhook\?token\=lz25ioqy6NTAUO4BshDh2yWb"
   echo $cmd
-  eval $cmd
+  # eval $cmd
 }
 
 save_report(){
+  local which_branch=$1
   if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     echo -e "Starting process data report"
 
-    generate_report
+    if [[ "$which_branch" == 'coverage' ]]; then
+      #statements
+      generate_report
+    fi
 
     set_git_info
-    local coverage_link=''
-    local analyzer_link=''
 
-    if [[ -d $HOME/coverage ]]; then
+    if [[ -d $HOME/coverage && "$which_branch" == 'coverage']]; then
       #statements
       push_2_report $HOME/coverage "coverage"
       coverage_link=$link
       coverage_repository=$link_repository
     fi
 
-    if [[ -d $TRAVIS_BUILD_DIR/analyzer_report ]]; then
+    if [[ -d $TRAVIS_BUILD_DIR/analyzer_report  && "$which_branch" == 'analyzer' ]]; then
       #statements
-      echo 'stop get build analyzer'
-      # push_2_report $TRAVIS_BUILD_DIR/analyzer_report "analyzer"
-      # analyzer_link=$link
-      # analyzer_repository=$link_repository
+      push_2_report $TRAVIS_BUILD_DIR/analyzer_report "analyzer"
+      analyzer_link=$link
+      analyzer_repository=$link_repository
     fi
 
-    if [[ "$coverage_link" != '' ]]; then
-      #statements
-      # push_comment_2_pullrequest $coverage_link $analyzer_link
-      push_comment_2_slack $coverage_repository $coverage_link $analyzer_repository $analyzer_link
-    fi
+    # if [[ "$coverage_link" != '' ]]; then
+    #   #statements
+    #   # push_comment_2_pullrequest $coverage_link $analyzer_link
+    #   push_comment_2_slack $coverage_repository $coverage_link $analyzer_repository $analyzer_link
+    # fi
+
+    # if [[ "$analyzer_link" != '' ]]; then
+    #   #statements
+    #   # push_comment_2_pullrequest $coverage_link $analyzer_link
+    #   push_comment_2_slack $coverage_repository $coverage_link $analyzer_repository $analyzer_link
+    # fi
 
     echo -e "End process data report"    
   fi
@@ -203,23 +201,9 @@ branch=$TRAVIS_BRANCH
 report_token=`perl -e "print pack 'H*','$1'"`
 report_repository="vfa-travisci/travisci"
 
-coverage_branch="ygo-report/${branch}/coverage/build_${TRAVIS_BUILD_NUMBER}"
-analyzer_branch="ygo-report/${branch}/analyzer/build_${TRAVIS_BUILD_NUMBER}"
+coverage_branch="test-report/${branch}/coverage/build_${TRAVIS_BUILD_NUMBER}"
+analyzer_branch="test-report/${branch}/analyzer/build_${TRAVIS_BUILD_NUMBER}"
 slack_channel=$2
-
-# getValueFromKey '/Users/travis/build/' $TRAVIS_BUILD_DIR
-# if [[ "$?" == 1 ]]; then
-#   #statements
-#   url_api="${url_api}${result}/pulls"
-#   echo "url_api=$url_api"
-#   getCurrentPullRequest $url_api
-#   if [[ "$?" == 1 ]]; then
-#     #statements
-#     pull_request=$result
-#     echo "pull_request=$pull_request"
-#     save_report
-#   fi
-# fi
 
 echo '-----------------------------'
 echo "REPOSITORY=$REPO"
@@ -232,6 +216,6 @@ echo "coverage_branch=${coverage_branch}"
 echo "analyzer_branch=${analyzer_branch}"
 echo '-----------------------------'
 
-save_report
+save_report $2
 
 # push_comment_2_slack $coverage_branch $analyzer_branch

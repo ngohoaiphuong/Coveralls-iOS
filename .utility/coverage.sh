@@ -1,12 +1,11 @@
-# svn checkout http://coverstory.googlecode.com/svn/trunk/ "$HOME/coverstory-read-only"
+svn checkout http://coverstory.googlecode.com/svn/trunk/ "$HOME/coverstory-read-only"
 
-# xcodebuild build -project $HOME/coverstory-read-only/CoverStory.xcodeproj CONFIGURATION_BUILD_DIR="/Applications"
+xcodebuild build -project $HOME/coverstory-read-only/CoverStory.xcodeproj CONFIGURATION_BUILD_DIR="/Applications"
 
-# rm -r "$HOME/coverstory-read-only"
+rm -r "$HOME/coverstory-read-only"
 
-# xcodebuild clean test -sdk iphonesimulator -project Coveralls-iOS.xcodeproj -scheme ci -configuration Debug OBJROOT=coverage_report ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
+xcodebuild clean test -sdk iphonesimulator -project "$APPNAME.xcodeproj" -scheme ci -configuration Debug OBJROOT=$COVERAGE_DIR ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
 
-echo '------------'
-echo $APPNAME
-echo $COVERAGE_DIR
-echo '------------'
+.utility/save_report.sh $REPORT_TOKEN "coverage"
+
+rm -r $TRAVIS_BUILD_DIR/$COVERAGE_DIR
