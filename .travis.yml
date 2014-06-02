@@ -12,7 +12,7 @@ script:
 # - rm -rf "$HOME/coverstory-read-only"
 - cd .utility
 - tar -xf CoverStory.zip
-- cp -R .utility/CoverStory.app /Applications
+- cp -R CoverStory.app /Applications
 - cd ..
 - xcodebuild clean test -sdk iphonesimulator -project "$APPNAME.xcodeproj" -scheme ci -configuration Debug OBJROOT=$COVERAGE_DIR ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
 - .utility/save_report.sh $REPORT_TOKEN "coverage"
