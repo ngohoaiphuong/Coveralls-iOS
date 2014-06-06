@@ -221,6 +221,8 @@ echo "GH_TOKEN=${GH_TOKEN}"
 echo "TRAVIS_TOKEN=${report_token}"
 echo "coverage_branch=${coverage_branch}"
 echo "analyzer_branch=${analyzer_branch}"
+echo "S3_ASW=${S3_ASW}"
+echo "S3_SECRET=${S3_SECRET}"
 echo '-----------------------------'
 
 if [[ "$2" == "send_message" ]]; then
