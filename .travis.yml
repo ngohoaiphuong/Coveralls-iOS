@@ -27,6 +27,7 @@ script:
 - rm -rf $TRAVIS_BUILD_DIR/$ANALYZER_DIR
 
 after_success:
+- echo "$S3_ASW == $S3_SECRET"
 - .utility/save_report.sh $REPORT_TOKEN "send_message"
 
 env:
@@ -40,3 +41,4 @@ env:
     - SLACK_CHANNEL="ci-report"
     #
     - secure: "v45pjcogHNfXQyopD7gJRWHem9MeNqfViwSANlGBVt1XD5LgKqKlFKnLmq9HN8F+neUSwxGGYx/+sF8okLi5ax5qqNQVy5JsNLPtIYXbiu6MWhy8EZ77TogANu4VNk3/QfTx29Cin+XzU81W4wXsFQzE9KG71wGo1TtmI663Yxo="
+    - secure: "D48gt29FPSCR75dVZPe+uD0MbgNUSaF6FDpzgjwUfw+mVIGdZXh/L94duZMVzcGgoElnKrfHR1rYl7n/4JXx118uv2QqhCS0uYVfRvu9H39ARcVXhfkYnFsJFP1Uq/lMEOtKrHGXKXoNrDBBZaHUsLFGRr3OCS5IVwNzpREPjsA="
