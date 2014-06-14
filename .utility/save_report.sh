@@ -64,9 +64,9 @@ deploy_to_s3(){
 
   # move result to target
   mv $coverage $path_s3
-  mv $ygo_name ${HOME}/target
+  mv $ygo_name target/
   echo "*list directory target"
-  ls -R $HOME/target
+  ls -R target
 }
 
 send_message_to_slack(){
@@ -99,10 +99,10 @@ init_enviroment(){
   filter='report/filter.info'
   coverage='report/coverage'
   analyze_file="$TRAVIS_BUILD_DIR/report/analyze.html"
+  ygo_name="YGO-iOS2"
 }
 
 init_s3_dir(){
-  ygo_name="YGO-iOS2"
   local s3YGO="s3/${ygo_name}"
   local branch=`echo $TRAVIS_BRANCH | sed -e 's/.*\///g'`
 
