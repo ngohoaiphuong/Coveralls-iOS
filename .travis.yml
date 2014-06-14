@@ -59,6 +59,8 @@ deploy:
   local-dir: target
   upload-dir: artifacts
   skip_cleanup: true
+  on:
+    branch: $TRAVIS_BRANCH
 
 after_deploy:
 - .utility/save_report.sh "message"
