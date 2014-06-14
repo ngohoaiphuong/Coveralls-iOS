@@ -2,32 +2,37 @@ language: objective-c
 
 before_install:
 - chmod +x .utility/save_report.sh
-- chmod +x .utility/coverage.sh
-- chmod +x .utility/analyzer.sh
+- chmod +x .utility/oclint.sh
+- chmod +x .utility/lcov.sh
+
+# update xctool
+- brew unlink xctool
+- brew update
+- brew install xctool
+
+# create target for deploy
+- mkdir target
+- mkdir report
+
+# install oclint tool for statis analysis code
+- .utility/oclint.sh
+
+# install library for OClint
+- gem install objective-ci
+
+# get tool for coverage
+- .utility/lcov.sh
 
 script:
-# build coverage directory
-# - svn checkout http://coverstory.googlecode.com/svn/trunk/ "$HOME/coverstory-read-only"
-# - xcodebuild build -project $HOME/coverstory-read-only/CoverStory.xcodeproj CONFIGURATION_BUILD_DIR="/Applications"
-# - rm -rf "$HOME/coverstory-read-only"
-- cd .utility
-- tar -xf CoverStory.zip
-- cp -R CoverStory.app /Applications
-- cd ..
-- xcodebuild clean test -sdk iphonesimulator -project "$APPNAME.xcodeproj" -scheme ci -configuration Debug OBJROOT=$COVERAGE_DIR ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
-- .utility/save_report.sh $REPORT_TOKEN "coverage"
-- rm -rf $TRAVIS_BUILD_DIR/$COVERAGE_DIR
+- xctool -project "$APPNAME.xcodeproj" -scheme "ci" -configuration Debug -sdk iphonesimulator -reporter json-compilation-database:compile_commands.json clean analyze
+- oclint-json-compilation-database -e Pods -e YourGolfTests -- -report-type=html -o=report/analyze.html
+- .utility/save_report.sh 'analyzer'
 
-# build analyzer directory
-- wget http://clang-analyzer.llvm.org/downloads/checker-276.tar.bz2
-- tar -xvjf checker-276.tar.bz2
-- rm checker-276.tar.bz2
-- ./checker-276/scan-build -o $ANALYZER_DIR xcodebuild -project "$APPNAME.xcodeproj" -configuration Debug -sdk iphonesimulator clean analyze 
-- .utility/save_report.sh $REPORT_TOKEN "analyzer"
-- rm -rf $TRAVIS_BUILD_DIR/$ANALYZER_DIR
+- xctool -project "$APPNAME.xcodeproj" -scheme "ci" -configuration Debug -sdk iphonesimulator OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES clean test
+- .utility/save_report.sh 'coverage'
 
 after_success:
-- .utility/save_report.sh $REPORT_TOKEN "send_message"
+- .utility/save_report.sh 'post'
 
 env:
   global:
@@ -38,6 +43,7 @@ env:
     - COVERAGE_DIR="coverage_report"
     - ANALYZER_DIR="analyzer_report"
     - SLACK_CHANNEL="ci-report"
+    - SUMMARY="--"
     #
     - secure: "v45pjcogHNfXQyopD7gJRWHem9MeNqfViwSANlGBVt1XD5LgKqKlFKnLmq9HN8F+neUSwxGGYx/+sF8okLi5ax5qqNQVy5JsNLPtIYXbiu6MWhy8EZ77TogANu4VNk3/QfTx29Cin+XzU81W4wXsFQzE9KG71wGo1TtmI663Yxo="
     - secure: "D48gt29FPSCR75dVZPe+uD0MbgNUSaF6FDpzgjwUfw+mVIGdZXh/L94duZMVzcGgoElnKrfHR1rYl7n/4JXx118uv2QqhCS0uYVfRvu9H39ARcVXhfkYnFsJFP1Uq/lMEOtKrHGXKXoNrDBBZaHUsLFGRr3OCS5IVwNzpREPjsA="
