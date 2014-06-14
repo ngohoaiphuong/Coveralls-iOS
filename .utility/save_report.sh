@@ -70,13 +70,19 @@ deploy_to_s3(){
 }
 
 send_message_to_slack(){
-  summary=`cat $log_file | egrep "lines\.+\:|functions\.+\:|branches\.+\:"`
-  lines=`echo $summary | egrep "lines\.+\:"`
-  functions=`echo $summary | egrep "functions\.+\:"`
-  branches=`echo $summary | egrep "branches\.+\:"`
+  local summary=`cat $log_file | egrep "lines\.+\:|functions\.+\:|branches\.+\:"`
+  local lines=`echo $summary | egrep "lines\.+\:"`
+  local functions=`echo $summary | egrep "functions\.+\:"`
+  local branches=`echo $summary | egrep "branches\.+\:"`
 
   local coverage_link="https://s3.amazonaws.com/ygo-development/artifacts/${path_s3}/coverage/index.html"
   local analyzer_link="https://s3.amazonaws.com/ygo-development/artifacts/${path_s3}/analyzer/index.html"
+
+  echo '--------report--------'
+  echo "lines:$lines"
+  echo "functions:$functions"
+  echo "branches:$branches"
+  echo '----------------------'
 
   payload="{\"channel\":\"#${slack_channel}\", \"username\": \"Travis CI\", \"text\":\"Coverage and Analyzer code completed\""
   payload="${payload},\"attachments\":[{\"pretext\":\"You can view more detail Coverage reports at ${coverage_link}\", \"fields\":[{\"value\":\"$lines\", \"short\":false}"
