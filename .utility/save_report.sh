@@ -1,5 +1,5 @@
 check_analyzer_result(){
-  analyze_file="$TRAVIS_BUILD_DIR/analyze.html"
+  analyze_file="$TRAVIS_BUILD_DIR/report/analyze.html"
   if [[ -f $analyze_file ]]; then
     #statements
     cp $analyze_file $path_s3/analyzer
@@ -61,13 +61,16 @@ make_build_coveraget(){
 
   # show summary after build html success
   $SUMMARY=`cat $log_file | egrep "lines\.+\:|functions\.+\:|branches\.+\:"`
+  mv $coverage $path_s3
 }
 
 deploy_and_send_to_slack(){
   echo '==============='
   echo $path_s3
   echo $SUMMARY
+  ls -R report | grep ":" | sed -e 's/://' -e 's/[^-][^\/]*\//--/g'
   echo '---------------'
+  ls -R $path_s3 | grep ":" | sed -e 's/://' -e 's/[^-][^\/]*\//--/g'
 }
 
 init_s3_dir(){
