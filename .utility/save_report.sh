@@ -9,7 +9,7 @@ check_analyzer_result(){
   fi
 }
 
-make_build_coveraget(){
+make_build_coverage(){
   log_file='report/log.txt'
   gcov_path=`which gcov`
   base_info='report/base.info'
