@@ -79,6 +79,7 @@ send_message_to_slack(){
   local analyzer_link="https://s3.amazonaws.com/ygo-development/artifacts/${path_s3}/analyzer/index.html"
 
   echo '--------report--------'
+  echo $summary
   echo "lines:$lines"
   echo "functions:$functions"
   echo "branches:$branches"
