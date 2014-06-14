@@ -1,25 +1,11 @@
 check_analyzer_result(){
-  analyze_file="$TRAVIS_BUILD_DIR/report/analyze.html"
-  if [[ -f $analyze_file ]]; then
-    #statements
-    echo "cp $analyze_file $path_s3/analyzer"
-    cp $analyze_file $path_s3/analyzer
-  else
+  if [[ ! -f $analyze_file ]]; then
     echo "Create analyze report fail"
     exit 1
   fi
 }
 
 make_build_coverage(){
-  log_file='report/log.txt'
-  gcov_path=`which gcov`
-  base_info='report/base.info'
-  info='report/info.info'
-  total='report/total.info'
-  pattern="'/Applications/Xcode.app/*' '*/Pods/*' '*/Library/Helper/*'"
-  filter='report/filter.info'
-  coverage='report/coverage'
-
   # initial information for begin parse coverage from gcda
   $HOME/lcov/bin/lcov --gcov-tool $gcov_path --capture --initial --directory $TRAVIS_BUILD_DIR/build --rc lcov_branch_coverage=1 --output-file $base_info > $log_file
   if [[ ! -f "$base_info" ]]; then
@@ -61,18 +47,56 @@ make_build_coverage(){
   fi
 
   # show summary after build html success
-  SUMMARY=`cat $log_file | egrep "lines\.+\:|functions\.+\:|branches\.+\:"`
-  mv $coverage $path_s3
+  cat $log_file | egrep "lines\.+\:|functions\.+\:|branches\.+\:"
 }
 
-deploy_and_send_to_slack(){
-  echo '==============='
-  echo $path_s3
-  echo $SUMMARY
+deploy_to_s3(){
+  echo "Prepare deploy to S3"
   echo '*list directory report'
   ls -R report
   echo "*list directory path_s3=$path_s3"
   ls -R $path_s3
+
+  if [[ -f $analyze_file ]]; then
+    #statements
+    cp $analyze_file $path_s3/analyzer/index.html
+  fi
+
+  # move result to target
+  mv $coverage $path_s3
+
+}
+
+send_message_to_slack(){
+  summary=`cat $log_file | egrep "lines\.+\:|functions\.+\:|branches\.+\:"`
+  lines=`echo $summary | egrep "lines\.+\:"`
+  functions=`echo $summary | egrep "functions\.+\:"`
+  branches=`echo $summary | egrep "branches\.+\:"`
+
+  local coverage_link="https://s3.amazonaws.com/ygo-development/artifacts/${path_s3}/coverage/index.html"
+  local analyzer_link="https://s3.amazonaws.com/ygo-development/artifacts/${path_s3}/analyzer/index.html"
+
+  payload="{\"channel\":\"#${slack_channel}\", \"username\": \"Travis CI\", \"text\":\"Coverage and Analyzer code completed\""
+  payload="${payload},\"attachments\":[{\"pretext\":\"You can view more detail Coverage reports at ${coverage_link}\", \"fields\":[{\"value\":\"$lines\", \"short\":false}"
+  payload="${payload},{\"value\":\"$functions\", \"short\":false}, {\"value\":\"$branches\", \"short\":false}]}, {\"pretext\":\"You can view more detail Analyzer reports at ${analyzer_link}\"}]"
+  payload="${payload},\"icon_url\":\"https://s3-us-west-2.amazonaws.com/slack-files2/bot_icons/2014-05-22/2351865235_48.png\"}"
+
+  cmd="curl -X POST --data-urlencode 'payload=${payload}' https://ygo.slack.com/services/hooks/incoming-webhook\?token\=lz25ioqy6NTAUO4BshDh2yWb"
+  echo $cmd
+  # eval $cmd
+
+}
+
+init_enviroment(){
+  log_file='report/log.txt'
+  gcov_path=`which gcov`
+  base_info='report/base.info'
+  info='report/info.info'
+  total='report/total.info'
+  pattern="'/Applications/Xcode.app/*' '*/Pods/*' '*/Library/Helper/*'"
+  filter='report/filter.info'
+  coverage='report/coverage'
+  analyze_file="$TRAVIS_BUILD_DIR/report/analyze.html"
 }
 
 init_s3_dir(){
@@ -87,13 +111,16 @@ init_s3_dir(){
   mkdir -p $path_s3/analyzer
 }
 
-
+init_enviroment
 init_s3_dir
 
 if [[ "$1" == "analyzer" ]]; then
   check_analyzer_result
 elif [[ "$1" == "coverage" ]]; then
   make_build_coverage
-elif [[ "$1" == "post" ]]; then
-  deploy_and_send_to_slack
+elif [[ "$1" == "deploy" ]]; then
+  deploy_to_s3
+elif [[ "$1" == "message" ]]; then
+  #statements
+  send_message_to_slack
 fi
