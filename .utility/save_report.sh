@@ -44,7 +44,7 @@ make_build_coverage(){
   fi
 
   # set filter some source code need don't show or don't build coverage
-  $HOME/lcov/bin/lcov --gcov-tool $gcov_path --remove report/coverage_total.info $pattern -o $filter --rc lcov_branch_coverage=1 > $log_file
+  $HOME/lcov/bin/lcov --gcov-tool $gcov_path --remove $total $pattern -o $filter --rc lcov_branch_coverage=1 > $log_file
   if [[ ! -f "$filter" ]]; then
     #statements
     cat $log_file
