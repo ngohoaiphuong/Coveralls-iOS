@@ -64,7 +64,7 @@ deploy_to_s3(){
 
   # move result to target
   mv $coverage $path_s3
-
+  mv $ygo_name ${HOME}/target
 }
 
 send_message_to_slack(){
@@ -100,7 +100,7 @@ init_enviroment(){
 }
 
 init_s3_dir(){
-  local ygo_name="YGO-iOS2"
+  ygo_name="YGO-iOS2"
   local s3YGO="s3/${ygo_name}"
   local branch=`echo $TRAVIS_BRANCH | sed -e 's/.*\///g'`
 
