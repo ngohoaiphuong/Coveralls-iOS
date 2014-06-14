@@ -65,6 +65,8 @@ deploy_to_s3(){
   # move result to target
   mv $coverage $path_s3
   mv $ygo_name ${HOME}/target
+  echo "*list directory target"
+  ls -R $HOME/target
 }
 
 send_message_to_slack(){
