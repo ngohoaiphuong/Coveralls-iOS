@@ -20,7 +20,7 @@ make_build_coverage(){
   coverage='report/coverage'
 
   # initial information for begin parse coverage from gcda
-  lcov --gcov-tool $gcov_path --capture --initial --directory $TRAVIS_BUILD_DIR/build --rc lcov_branch_coverage=1 --output-file $base_info > $log_file
+  $HOME/lcov/bin/lcov --gcov-tool $gcov_path --capture --initial --directory $TRAVIS_BUILD_DIR/build --rc lcov_branch_coverage=1 --output-file $base_info > $log_file
   if [[ ! -f "$base_info" ]]; then
     #statements
     cat $log_file
@@ -28,7 +28,7 @@ make_build_coverage(){
   fi
 
   # get information from file gcda
-  lcov --gcov-tool $gcov_path --capture --directory build --rc lcov_branch_coverage=1 --output-file $info > $log_file
+  $HOME/lcov/bin/lcov --gcov-tool $gcov_path --capture --directory build --rc lcov_branch_coverage=1 --output-file $info > $log_file
   if [[ ! -f "$info" ]]; then
     #statements
     cat $log_file
@@ -36,7 +36,7 @@ make_build_coverage(){
   fi
 
   # get detail data from above information
-  lcov --gcov-tool $gcov_path --add-tracefile $base_info --add-tracefile $info --output-file $total --rc lcov_branch_coverage=1  > $log_file
+  $HOME/lcov/bin/lcov --gcov-tool $gcov_path --add-tracefile $base_info --add-tracefile $info --output-file $total --rc lcov_branch_coverage=1  > $log_file
   if [[ ! -f "$total" ]]; then
     #statements
     cat $log_file
@@ -44,7 +44,7 @@ make_build_coverage(){
   fi
 
   # set filter some source code need don't show or don't build coverage
-  lcov --gcov-tool $gcov_path --remove report/coverage_total.info $pattern -o $filter --rc lcov_branch_coverage=1 > $log_file
+  $HOME/lcov/bin/lcov --gcov-tool $gcov_path --remove report/coverage_total.info $pattern -o $filter --rc lcov_branch_coverage=1 > $log_file
   if [[ ! -f "$filter" ]]; then
     #statements
     cat $log_file
@@ -52,7 +52,7 @@ make_build_coverage(){
   fi
 
   # generate information from filter info file into html report
-  genhtml --ignore-errors source $filter --legend --title "Coverage Code" --branch-coverage --output-directory $coverage > $log_file
+  $HOME/lcov/bin/genhtml --ignore-errors source $filter --legend --title "Coverage Code" --branch-coverage --output-directory $coverage > $log_file
   if [[ ! -d "$coverage" ]]; then
     #statements
     cat $log_file
