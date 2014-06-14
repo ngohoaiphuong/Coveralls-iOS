@@ -70,9 +70,9 @@ deploy_and_send_to_slack(){
   echo $path_s3
   echo $SUMMARY
   echo '*list directory report'
-  ls -R report | grep ":" | sed -e 's/://' -e 's/[^-][^\/]*\//--/g'
+  ls -R report
   echo "*list directory path_s3=$path_s3"
-  ls -R $path_s3 | grep ":" | sed -e 's/://' -e 's/[^-][^\/]*\//--/g'
+  ls -R $path_s3
 }
 
 init_s3_dir(){
