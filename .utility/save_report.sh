@@ -71,9 +71,9 @@ deploy_to_s3(){
 
 send_message_to_slack(){
   local summary=`cat $log_file | egrep "lines\.+\:|functions\.+\:|branches\.+\:"`
-  local lines=`echo $summary | egrep "lines\.+\:"`
-  local functions=`echo $summary | egrep "functions\.+\:"`
-  local branches=`echo $summary | egrep "branches\.+\:"`
+  local lines=`echo $summary | sed -e "s/ functions\.*\:[^\)]*) //g" -e "s/branches\.*\:[^\)]*)//g" -e "s/^ //g" -e "s/ $//g"`
+  local functions_=`echo $summary | sed -e "s/lines\.*\:[^\)]*) //g" -e "s/ branches\.*\:[^\)]*)//g" -e "s/^ //g" -e "s/ $//g"`
+  local branches=`echo $summary | sed -e "s/lines\.*\:[^\)]*) //g" -e "s/ functions\.*\:[^\)]*)//g" -e "s/^ //g" -e "s/ $//g"`
 
   local coverage_link="https://s3.amazonaws.com/ygo-development/artifacts/${path_s3}/coverage/index.html"
   local analyzer_link="https://s3.amazonaws.com/ygo-development/artifacts/${path_s3}/analyzer/index.html"
@@ -85,9 +85,9 @@ send_message_to_slack(){
   echo "branches:$branches"
   echo '----------------------'
 
-  payload="{\"channel\":\"#${slack_channel}\", \"username\": \"Travis CI\", \"text\":\"Coverage and Analyzer code completed\""
+  payload="{\"channel\":\"#${SLACK_CHANNEL}\", \"username\": \"Travis CI\", \"text\":\"Coverage and Analyzer code completed\""
   payload="${payload},\"attachments\":[{\"pretext\":\"You can view more detail Coverage reports at ${coverage_link}\", \"fields\":[{\"value\":\"$lines\", \"short\":false}"
-  payload="${payload},{\"value\":\"$functions\", \"short\":false}, {\"value\":\"$branches\", \"short\":false}]}, {\"pretext\":\"You can view more detail Analyzer reports at ${analyzer_link}\"}]"
+  payload="${payload},{\"value\":\"$functions_\", \"short\":false}, {\"value\":\"$branches\", \"short\":false}]}, {\"pretext\":\"You can view more detail Analyzer reports at ${analyzer_link}\"}]"
   payload="${payload},\"icon_url\":\"https://s3-us-west-2.amazonaws.com/slack-files2/bot_icons/2014-05-22/2351865235_48.png\"}"
 
   cmd="curl -X POST --data-urlencode 'payload=${payload}' https://ygo.slack.com/services/hooks/incoming-webhook\?token\=lz25ioqy6NTAUO4BshDh2yWb"
