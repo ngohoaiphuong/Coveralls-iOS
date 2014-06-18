@@ -6,9 +6,3 @@ if [[ ! -d oclint-0.9.dev.43e26f7 ]]; then
 	exit 1
 fi
 
-OCLINT_HOME=$TRAVIS_BUILD_DIR/oclint-0.9.dev.43e26f7
-export PATH=$OCLINT_HOME/bin:$PATH
-
-echo '---------------checking exists oclint--------------'
-which oclint
-echo '---------------------------------------------------'

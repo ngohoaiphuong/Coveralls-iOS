@@ -16,7 +16,13 @@ before_install:
 
   # install oclint tool for statis analysis code
   - ./scripts/oclint.sh
+  - OCLINT_HOME=$TRAVIS_BUILD_DIR/oclint-0.9.dev.43e26f7
+  - export PATH=$OCLINT_HOME/bin:$PATH
 
+  - echo '---------------checking exists oclint--------------'
+  - which oclint
+  - echo '---------------------------------------------------'
+  
   # get tool for coverage
   - ./scripts/lcov.sh
 
