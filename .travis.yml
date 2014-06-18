@@ -19,10 +19,10 @@ before_install:
   - OCLINT_HOME=$TRAVIS_BUILD_DIR/oclint-0.9.dev.43e26f7
   - export PATH=$OCLINT_HOME/bin:$PATH
 
-  - echo '---------------checking exists oclint--------------'
+  - echo '-------------- checking exists oclint --------------'
   - which oclint
-  - echo '---------------------------------------------------'
-  
+  - echo '----------------------------------------------------'
+
   # get tool for coverage
   - ./scripts/lcov.sh
 
