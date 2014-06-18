@@ -1,62 +1,62 @@
 language: objective-c
 
 before_install:
-- chmod +x ./scripts/save_report.sh
-- chmod +x ./scripts/oclint.sh
-- chmod +x ./scripts/lcov.sh
+  - chmod +x ./scripts/save_report.sh
+  - chmod +x ./scripts/oclint.sh
+  - chmod +x ./scripts/lcov.sh
 
-# update xctool
-- brew unlink xctool
-- brew update
-- brew install xctool
+  # update xctool
+  - brew unlink xctool
+  - brew update
+  - brew install xctool
 
-# create target for deploy
-- mkdir target
-- mkdir report
+  # create target for deploy
+  - mkdir target
+  - mkdir report
 
-# install oclint tool for statis analysis code
-- ./scripts/oclint.sh
+  # install oclint tool for statis analysis code
+  - ./scripts/oclint.sh
 
-# get tool for coverage
-- ./scripts/lcov.sh
+  # get tool for coverage
+  - ./scripts/lcov.sh
 
 script:
-- xctool -project "$APPNAME.xcodeproj" -scheme "ci" -configuration Debug -sdk iphonesimulator -reporter json-compilation-database:compile_commands.json OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES clean analyze test
-- oclint-json-compilation-database -e Pods -- -report-type=html -o=report/analyze.html
-- ./scripts/save_report.sh 'analyzer'
+  - xctool -project "$APPNAME.xcodeproj" -scheme "ci" -configuration Debug -sdk iphonesimulator -reporter json-compilation-database:compile_commands.json OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES clean analyze test
+  - oclint-json-compilation-database -e Pods -- -report-type=html -o=report/analyze.html
+  - ./scripts/save_report.sh 'analyzer'
 
-- ./scripts/save_report.sh 'coverage'
+  - ./scripts/save_report.sh 'coverage'
 
 after_success:
 
 env:
-  global:
-    - APPNAME="Coveralls-iOS"
-    - DESCRIPTION="Run test coverage and analyze"
-    # enviroment for report
-    - REPORT_TOKEN="35636266373463666535653265396232363437393536396134633239616666326232366339393065"
-    - COVERAGE_DIR="coverage_report"
-    - ANALYZER_DIR="analyzer_report"
-    - SLACK_CHANNEL="ci-report"
-    #
-    - secure: v45pjcogHNfXQyopD7gJRWHem9MeNqfViwSANlGBVt1XD5LgKqKlFKnLmq9HN8F+neUSwxGGYx/+sF8okLi5ax5qqNQVy5JsNLPtIYXbiu6MWhy8EZ77TogANu4VNk3/QfTx29Cin+XzU81W4wXsFQzE9KG71wGo1TtmI663Yxo=
-    - secure: D48gt29FPSCR75dVZPe+uD0MbgNUSaF6FDpzgjwUfw+mVIGdZXh/L94duZMVzcGgoElnKrfHR1rYl7n/4JXx118uv2QqhCS0uYVfRvu9H39ARcVXhfkYnFsJFP1Uq/lMEOtKrHGXKXoNrDBBZaHUsLFGRr3OCS5IVwNzpREPjsA=
-    - secure: SdD0173h3QUnYDaVt3aZuh7OTn+bnTD5jvVGM5ye4bX8UpUkc3Gkcv3iEnXLDhkqqxUuPARtcw1Bg4L9vat+IA5dK+TaCDbqd4073ivK2GqJrpRI5u/FqCAE3HCuYUFxHJ1T64FPyZ9trnX9iNj2awA9FLV8VZEa6PNZWgSSzY0=
+global:
+  - APPNAME="Coveralls-iOS"
+  - DESCRIPTION="Run test coverage and analyze"
+  # enviroment for report
+  - REPORT_TOKEN="35636266373463666535653265396232363437393536396134633239616666326232366339393065"
+  - COVERAGE_DIR="coverage_report"
+  - ANALYZER_DIR="analyzer_report"
+  - SLACK_CHANNEL="ci-report"
+  #
+  - secure: v45pjcogHNfXQyopD7gJRWHem9MeNqfViwSANlGBVt1XD5LgKqKlFKnLmq9HN8F+neUSwxGGYx/+sF8okLi5ax5qqNQVy5JsNLPtIYXbiu6MWhy8EZ77TogANu4VNk3/QfTx29Cin+XzU81W4wXsFQzE9KG71wGo1TtmI663Yxo=
+  - secure: D48gt29FPSCR75dVZPe+uD0MbgNUSaF6FDpzgjwUfw+mVIGdZXh/L94duZMVzcGgoElnKrfHR1rYl7n/4JXx118uv2QqhCS0uYVfRvu9H39ARcVXhfkYnFsJFP1Uq/lMEOtKrHGXKXoNrDBBZaHUsLFGRr3OCS5IVwNzpREPjsA=
+  - secure: SdD0173h3QUnYDaVt3aZuh7OTn+bnTD5jvVGM5ye4bX8UpUkc3Gkcv3iEnXLDhkqqxUuPARtcw1Bg4L9vat+IA5dK+TaCDbqd4073ivK2GqJrpRI5u/FqCAE3HCuYUFxHJ1T64FPyZ9trnX9iNj2awA9FLV8VZEa6PNZWgSSzY0=
 
 before_deploy:
-- .utility/save_report.sh "deploy"
+  - ./scripts/save_report.sh "deploy"
 
 deploy:
-  provider: s3
-  access_key_id: AKIAIW6RCACCAER7DFQQ
-  secret_access_key: 
-    secure: $SSS
-  bucket: ygo-development
-  local-dir: target
-  upload-dir: "artifacts/YGO-iOS2"
-  skip_cleanup: true
-  on:
-    branch: $TRAVIS_BRANCH
+provider: s3
+access_key_id: AKIAIW6RCACCAER7DFQQ
+secret_access_key: 
+  secure: $SSS
+bucket: ygo-development
+local-dir: target
+upload-dir: "artifacts/YGO-iOS2"
+skip_cleanup: true
+on:
+  branch: $TRAVIS_BRANCH
 
 after_deploy:
-- .utility/save_report.sh "message"
+  - ./scripts/save_report.sh "message"
