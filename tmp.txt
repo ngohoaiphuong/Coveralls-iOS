@@ -1,0 +1,90 @@
+language: objective-c
+
+env:
+  global:
+    - APPNAME="YourGolf"
+    - APPNAME_PUMA="YourGolf Puma"
+    - PROVISONING_PROFILE=free.mobileprovision
+    - PROVISONING_PROFILE_PUMA=puma.mobileprovision
+    # enviroment for report
+    - COVERAGE_DIR="coverage"
+    - ANALYZER_DIR="analyzer"
+    - SLACK_CHANNEL="code-metrics"
+    #
+    - 'DEVELOPER_NAME="iPhone Developer: Michiyasu Yabuki (GQJ2QQM2MP)"'
+    #
+    # KEY PASSWORD
+    - secure: W1xZVvKkigo4EZezprstJDoOJTT4iAL2g6e3InsunQ3MPYHBgHFR6j9QHFETGz6Ki5Zt1BEU2e4jVrZ1n/NDEt4shFN2pTExE1DjTG6Bd4Wr+G3p/JB6bGNzqkcxhmKoY6Nt5xfSzw/47EYXWXv6bhhWSzvNJ3xm9PwyZHDF0Po=
+    # TEAM TOKEN
+    - secure: ecbNDtN6iSwFtYwSJE1HpERboGXWlCHCVJpg8FnGDJMK7yA/SpRBczLo4NMXZ12+OAM7fYpHiE47ZQGsqdZPmMOiF5MYKmw0rqSTQkIamdNoR4QBx+dAweFQYBkM/drG0T29JkCTS9+UPFW6oMz4LJoPiggcqCc8zmahLaKu77A=
+    # API TOKEN
+    - secure: EoJBuFNjqlg2nEylAu3VZPJNAuz34Gh0Kkvq9mO/D1ri6/kI2pWzUclBo9Xrs98Bj0IQjWmwVPZ0khFKyN2xswQzCyemTpO0og02gBglxrpn3Smm73OQDzHHdydqqWQq/042ek7kEFQW92+i9V8VzbAggsd47AmrIt6/sQgdxSw=
+    # S3_SECRET_ACCESS_KEY
+    - secure: bQXxJhUqgMUmr87XncQ4Gj4QFaANZB5mGvmDbAazssUMGFyvjE91ZyyNGvmgwFxzMdWv/QCIRAAtDKbjLLwfG21IYZ07Mmn2FoNPm6aNc8wg3BdSJOwBa8uILkIFo1witkgoH1xNADtnqN27Wmv5cfX4Ub2W03d+FN7pY+DHHpw=
+
+before_install:
+  # set mode execute for script
+  - chmod +x scripts/travis/add-key.sh
+  - chmod +x scripts/travis/remove-key.sh
+  - chmod +x scripts/travis/testflight.sh
+
+  # install gem cocoapods for ios
+  - gem install cocoapods
+
+  # update xctool
+  - brew unlink xctool
+  - brew update
+  - brew install xctool
+
+  # create target for deploy and build report
+  - mkdir target
+  - mkdir report
+
+  - ./scripts/install_oclint.sh
+
+  # install library for OClint
+  # - gem install objective-ci
+  - OCLINT_HOME=$TRAVIS_BUILD_DIR/oclint-0.9.dev.43e26f7
+  - export PATH=$OCLINT_HOME/bin:$PATH
+
+  # get tool for coverage
+  - ./scripts/install_lcov.sh
+
+before_script:
+  - ./scripts/travis/add-key.sh
+
+script:
+  # run xctool to analysis & export report to json-compilation-database
+  - xctool -workspace "$APPNAME.xcworkspace" -scheme "$APPNAME" -configuration Debug -sdk iphonesimulator -reporter json-compilation-database:compile_commands.json OBJROOT=build ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES clean analyze test
+  # build report analyze
+  - oclint-json-compilation-database -e Pods -- -report-type=html -o=report/analyze.html
+  - ./scripts/save_report.sh 'analyzer'
+  # begin build coverage
+  - ./scripts/save_report.sh 'coverage'
+
+after_script:
+  - ./scripts/travis/remove-key.sh
+
+after_success:
+  - ./scripts/travis/testflight.sh
+
+before_deploy:
+  - ./scripts/save_report.sh "deploy"
+
+deploy:
+  provider: s3
+  access_key_id: AKIAIW6RCACCAER7DFQQ
+  secret_access_key: 
+    secure: $S3_SECRET_ACCESS_KEY
+  bucket: ygo-development
+  local-dir: target
+  upload-dir: "artifacts/YGO-iOS2"
+  skip_cleanup: true
+  on:
+    branch: $TRAVIS_BRANCH
+
+after_deploy:
+  - ./scripts/save_report.sh "message"
+
+notifications:
+  slack: ygo:vNCSy9LezWzYwt3ZQh2okle5
