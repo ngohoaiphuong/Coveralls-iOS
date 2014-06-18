@@ -25,7 +25,7 @@ script:
 - oclint-json-compilation-database -e Pods -- -report-type=html -o=report/analyze.html
 - ./scripts/save_report.sh 'analyzer'
 
-- ./scriptsy/save_report.sh 'coverage'
+- ./scripts/save_report.sh 'coverage'
 
 after_success:
 
